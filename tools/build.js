@@ -10,6 +10,7 @@ const {SVG} = require('mathjax-full/js/output/svg.js');
 const {liteAdaptor} = require('mathjax-full/js/adaptors/liteAdaptor.js');
 const {RegisterHTMLHandler} = require('mathjax-full/js/handlers/html.js');
 
+const figs = require('./figs.js');
 const sec = process.argv[2] || '1.1', publish = process.argv.includes('--publish');
 const root = path.join(__dirname, '..'), src = path.join(root, 'src'), sdir = path.join(src, sec);
 const meta = JSON.parse(fs.readFileSync(path.join(sdir, 'meta.json'), 'utf8'));
@@ -41,18 +42,20 @@ function body(lines) {
   }
   return out.join('\n');
 }
-function dsl(text) {
+function dsl(text, intro) {
   // split into @directive blocks
   const blocks = []; let cur = null;
   for (const line of text.split('\n')) {
     const m = line.match(/^@(\w+)\s*(.*)$/);
     if (m) { cur = {k: m[1], arg: m[2].trim(), lines: []}; blocks.push(cur); } else if (cur) cur.lines.push(line);
   }
-  let h = '', steps = null, step = null;
+  let h = '', steps = null, step = null, card = null;
+  const closeCard = () => { if (card !== null) { h += card + '</div>\n'; card = null; } };
   const closeStep = () => { if (step) { steps.push(step + '</div></li>'); step = null; } };
   const closeSteps = () => { closeStep(); if (steps) { h += '<ol class="steps">' + steps.join('\n') + '</ol>\n'; steps = null; } };
   for (const b of blocks) {
     const t = body(b.lines);
+    if (b.k === 'card') { closeCard(); card = `<div class="card pre"><b>${inline(b.arg)}</b>\n${t}\n`; continue; }
     if (b.k === 'ex') {                              // @ex 1.15 7   (number, original page)
       const [num, pg] = b.arg.split(/\s+/); const id = 'ex' + num.replace('.', '-');
       h += `<section class="example" id="${id}">\n<h2>例 ${num}</h2>\n`; dsl.pg = pg;
@@ -65,11 +68,12 @@ function dsl(text) {
     else if (b.k === 'why') step += `<div class="idea"><b>${inline(b.arg)}</b>\n${t}</div>\n`;
     else if (b.k === 'book') { closeSteps(); h += `<details><summary>${inline(b.arg || '对照：原书的解析')}</summary>\n${t}\n</details>\n`; }
     else if (b.k === 'sum') { closeSteps(); h += `<div class="summary-box"><h3>这题记住什么</h3>\n${t}\n</div>\n`; }
+    else if (figs[b.k]) { const f = figs[b.k](b.lines.filter(l => l.trim()).map(l => l.trim()), b.arg); step ? step += f : card !== null ? card += f : h += f; }
     else if (b.k === 'raw') step ? step += t + '\n' : h += t + '\n';
     else throw new Error('unknown directive @' + b.k);
   }
-  closeSteps();
-  return h + '</section>\n';
+  closeSteps(); closeCard();
+  return intro ? h : h + '</section>\n';
 }
 
 // ---------- assemble ----------
@@ -80,7 +84,8 @@ const ids = parts.map(p => (p.match(/id="(ex[\d-]+)"/) || [])[1]);
 const num = id => id.slice(2).replace('-', '.');
 const toc = ids.map(id => `<a href="#${id}">例 ${num(id)}</a>`).join('\n');
 const back = '<p class="back"><a href="#toc">↑ 回到目录</a></p>';
-const intro = fs.existsSync(path.join(sdir, 'intro.html')) ? fs.readFileSync(path.join(sdir, 'intro.html'), 'utf8') : '';
+const ip = f => path.join(sdir, f);
+const intro = fs.existsSync(ip('intro.t')) ? dsl(fs.readFileSync(ip('intro.t'), 'utf8'), true) : fs.existsSync(ip('intro.html')) ? fs.readFileSync(ip('intro.html'), 'utf8') : '';
 const nav = publish ? '<nav class="card"><div><b>其他小节：</b>' + JSON.parse(fs.readFileSync(path.join(src, 'sections.json'), 'utf8'))
   .map(s => s.id === sec ? `${s.id} ${s.name}（当前）` : `<a href="${s.href}">${s.id} ${s.name}</a>`).join(' ｜ ') + '</div></nav>' : '';
 const html = `<!doctype html>

@@ -15,6 +15,10 @@ $$1=uf+v\big((f+g)-f\big)=(u-v)f+v\,(f+g).$$
 同理把 $f$ 写成 $(f+g)-g$：
 $$1=u\big((f+g)-g\big)+vg=u\,(f+g)+(v-u)g,$$
 所以 $\gcd(g,f+g)=1$。
+@flow 证明路线：先和 f、g 各自互素，再与乘积互素
+[a]gcd(f,g)=1 -{改写成 f 与 f+g 的组合}> [b]gcd(f, f+g)=1
+[a]gcd(f,g)=1 -{改写成 g 与 f+g 的组合}> [b]gcd(g, f+g)=1
+[b]两者都互素 -{例1.24}> [c]gcd(f+g, fg)=1
 @step “$\Rightarrow$”第三步：用 [[1.24]] 合并
 [[1.24]] 说：$\gcd(F,\,GH)=1\iff\gcd(F,G)=1$ 且 $\gcd(F,H)=1$。取 $F=f+g,\ G=f,\ H=g$：由前两步，$\gcd(f+g,f)=\gcd(f+g,g)=1$，所以
 $$\gcd(f+g,\ fg)=1.$$

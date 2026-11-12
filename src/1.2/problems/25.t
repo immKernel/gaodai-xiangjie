@@ -9,6 +9,13 @@ $fg=x^2(x+1)(x-1)$，$dh=x\cdot x(x+1)(x-1)=x^2(x+1)(x-1)$，两者恰好相等�
 设 $f,g$ 不全为零（全为零见本题最后一句）。写 $f=du,\ g=dv$。取裴蜀等式 $Af+Bg=d$，代入并约去 $d$：
 $$A\,du+B\,dv=d\ \Longrightarrow\ Au+Bv=1.$$
 所以 $\gcd(u,v)=1$。
+@blocks f=du，g=dv，h 含 d u v：dh 恰好有 fg 的全部块
+f: d u
+g: d v
+h: d u v
+=dh: d d u v
+=fg: d u d v
+legend a f, g, h 共有的块
 @step 利用 $f\mid h,\ g\mid h$ 写出两个表达式
 $$h=fp=d\,u\,p,\qquad h=gq=d\,v\,q.$$
 两式相等，约去 $d$：$up=vq$。

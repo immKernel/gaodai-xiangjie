@@ -11,6 +11,10 @@ $m=2,n=1$：$x^2\cdot1+(1-x)(1+x)=x^2+1-x^2=1$，取 $f=1,\ g=1+x$。
 $$1=\big(x+(1-x)\big)^N=\sum_{k=0}^{N}\binom Nk x^k(1-x)^{N-k}.$$
 @why 为什么选指数 $m+n-1$？
 $x$ 的次数 $k$ 与 $(1-x)$ 的次数 $N-k$ 加起来是 $N=m+n-1$。如果 $k\le m-1$（不够 $m$ 个 $x$），那么 $N-k\ge n$（$(1-x)$ 至少有 $n$ 个）；如果 $k\ge m$，$x$ 就够 $m$ 个了。**两种情况总有一种成立，每一项都能“认领”一边**——这就是指数选 $m+n-1$ 的原因。
+@strip 取 m=2，n=3，N=4：展开式的 5 项，按 k 分堆
+[b]k=0 | [b]k=1 | [a]k=2 | [a]k=3 | [a]k=4
+legend a k ≥ m=2：含 x^2，归入 f 这一堆（乘 x^m）
+legend b k ≤ 1：(1−x) 的次数 N−k ≥ 3=n，归入 g 这一堆（乘 (1−x)^n）
 @step 分成两堆，各自提公因式
 - 第一堆 $k=m,m+1,\dots,N$：每项都含 $x^m$，提出：
 $$\sum_{k=m}^{N}\binom Nk x^k(1-x)^{N-k}=x^m\underbrace{\sum_{k=m}^{N}\binom Nk x^{k-m}(1-x)^{N-k}}_{f_0}.$$

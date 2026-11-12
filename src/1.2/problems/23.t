@@ -12,6 +12,12 @@ $$h=gu=dvu=(du)v=fv,$$
 所以 $g\mid h$ 且 $f\mid h$。
 @why 为什么选 $h=gu$？
 $gu=fg/d$。就是把 $fg$ 里重复的 $d$ 去掉一份，它仍然被 $f$ 和 $g$ 整除（这就是“最小公倍式”的想法）。
+@blocks 去掉重复的公共块 d，h 比 fg 少一个 d，所以 fg 不可能整除 h
+f: d u
+g: d v
+=h: d u v
+=fg: d u d v
+legend a f 与 g 的公共块
 @step 用题设得到矛盾
 由题设 $fg\mid h$，即 $gu=fg\cdot q$。两边约去 $g\ne0$：
 $$u=fq.$$

@@ -7,6 +7,10 @@ $$x^4+x^2+1\ \Big|\ f_1(x^3)+x^4f_2(x^3).$$
 @step 求出 $x^4+x^2+1$ 的根
 $x^6-1=(x^2-1)(x^4+x^2+1)$。令 $\omega=e^{2\pi i/6}$（$\omega^6=1$，$\omega^3=-1$，$\omega^k$ 当 $k=0,\dots,5$ 时互不相同）。$x^6-1$ 的六个根是 $\omega^0,\dots,\omega^5$，其中 $x^2-1$ 占去 $\omega^0=1,\ \omega^3=-1$，所以 $x^4+x^2+1$ 的四个根是
 $$\omega,\ \omega^2,\ \omega^4,\ \omega^5.$$
+@roots x⁴+x²+1 的四个根（蓝点）在单位圆上，与 x=±1 一起构成 6 次单位根
+n 6
+hi 1 2 4 5 | x^4+x^2+1 的根
+conj
 @step 代入 $\omega$ 和 $\omega^5$：得到 $x=-1$ 处的信息
 令 $F(x)=f_1(x^3)+x^4f_2(x^3)$，$F(\text{根})=0$。
 - 代入 $\omega$：$\omega^3=-1$，所以 $f_1(-1)+\omega^4f_2(-1)=0$。

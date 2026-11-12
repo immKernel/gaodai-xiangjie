@@ -9,6 +9,8 @@ $f=x$，$g=x+1$，$h=x-1$：$f$ 与 $g$ 互素，$f$ 与 $h$ 互素，$gh=x^2-1$
 $$pf+qg=1,\qquad uf+vh=1.$$
 两个“$1$”相乘还是 $1$：
 $$1=(pf+qg)(uf+vh)=puf^2+pvfh+quf g+qv\,gh.$$
+@flow “1 乘 1”：把两个裴蜀等式相乘，再把含 f 的项合并
+[a]pf+qg=1 -{乘 uf+vh=1}> [b]展开成四项 -{前三项提出 f}> [c]f·(…) + (qv)·gh = 1
 @step 把含 $f$ 的项合并
 前三项都含因子 $f$，提出来：
 $$1=f\cdot(puf+pvh+qug)+(qv)\cdot(gh).$$

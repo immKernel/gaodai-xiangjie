@@ -10,6 +10,11 @@ $f=x-1,\ g=x+1$（互素），$h=x^2-1$。$gh=(x+1)(x^2-1)$。$\gcd(f,gh)=x-1$�
 @step (1) 利用 $uf+vg=1$
 $\gcd(f,g)=1$，所以有 $u,v$ 使 $uf+vg=1$。两边乘 $h$：
 $$(uh)f+v(gh)=h.$$
+@venn gcd(f, g)=1 时，(f, gh) 与 (f, h) 的公因式完全相同
+gap 24
+LT (f, gh) 的公因式
+RT (f, h) 的公因式
+M 完全相同
 @step (1) 证明 $(f,gh)$ 与 $(f,h)$ 的公因式相同
 - 若 $e\mid f$ 且 $e\mid gh$：由上式（工具 (C)），$e\mid h$。所以 $e$ 是 $f,h$ 的公因式。
 - 若 $e\mid f$ 且 $e\mid h$：则 $e\mid h\mid gh$，所以 $e$ 是 $f,gh$ 的公因式。
@@ -19,6 +24,11 @@ $$(uh)f+v(gh)=h.$$
 $h=(x-1)(x^2-1)=(x-1)f$，所以 $f\mid h$；又 $f\mid h\mid gh$。两个 gcd 都是 $f$ 的首一化：
 $$\gcd(f,gh)=f=\gcd(f,h).$$
 但 $f=(x-1)(x+1)=(x-1)g$，所以 $\gcd(f,g)=x+1\ne1$。反例成立，“不一定”。
+@blocks 反例：f=x²−1，g=x+1，h=(x−1)²(x+1)。三行的公共块恰好都是 f 的两个块
+f: (x−1) (x+1)
+gh: (x−1) (x−1) (x+1) (x+1)
+h: (x−1) (x−1) (x+1)
+legend a 三行共有（即 gcd(f,gh)=gcd(f,h)=f）
 @why 反例是怎么想到的？
 想让 $h$ 本身就是 $f$ 的倍数：这时不管 $g$ 是什么，$\gcd(f,gh)$ 和 $\gcd(f,h)$ 都等于 $f$。而 $g$ 随便取一个和 $f$ 有公因式的就行。
 @step (3) 一定成立：取 $h=1$

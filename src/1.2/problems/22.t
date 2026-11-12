@@ -6,6 +6,12 @@ $$M=\{\,uf+vg\ \mid\ u,v\in F[x],\ uf+vg\ne0\,\}.$$
 @idea $M$ 就是“$f,g$ 所有非零线性组合”的集合。裴蜀等式说 $\gcd$ 自己就在 $M$ 里；而 $M$ 里每个元素都被 $\gcd$ 整除，所以谁也比 $\gcd$ 次数更低。
 @step0 先看一个例子
 $f=x^2-1,\ g=x-1$。$M$ 里有 $f$、$g$、$f+g=x^2+x-2$、$f-(x+1)g=0$（零，不算在 $M$ 里）……次数最低的是 $g=x-1$（一次），而 $\gcd(f,g)=x-1$ ✓。再乘常数，$5(x-1)=0\cdot f+5g$ 也在 $M$ 里，次数也是一次。
+@bars 例子 f=x²−1，g=x−1：M 里的元素的次数，最低的就是 deg gcd = 1
+mark 1 | deg gcd = 1
+f | 2 | box | 2
+f + g | 2 | box | 2
+g (= gcd) | 1 | c | 1
+5g | 1 | c | 1（常数倍）
 @step $M$ 非空
 取 $u=1,\ v=0$，得 $f\in M$（$f\ne0$）。所以 $M\ne\varnothing$。
 @step $\gcd$ 本身在 $M$ 里

@@ -17,6 +17,8 @@ $u=qh+r$，$\deg r<\deg h$。代回所有的式子：
 $$\begin{aligned}f&=q_0h+r_0=q_0h+ug+vh\\&=q_0h+(qh+r)g+vh\\&=gr+h\,(q_0+qg+v).\end{aligned}$$
 @step 得出结论
 取 $r$ 为上面的余式（$\deg r<\deg h$），$s=q_0+qg+v$，就有 $f=gr+hs$。证毕。
+@flow 证明路线：先除 h，再裴蜀，再把 g 前面的系数压小
+[a]f -{÷ h}> [b]q₀h + r₀ -{r₀ = ug + vh}> [b]q₀h + ug + vh -{u = qh + r}> [c]g·r + h·(q₀+qg+v)
 @book 补充说明：为什么要 $h\ne0$
 $h=0$ 时 $\deg h=-\infty$（或约定 $\deg 0=-1$），例如 $g=1,h=0$（互素），$f=1$ 要求 $\deg r<\deg h$，没有任何多项式 $r$ 能满足。所以必须假设 $h\ne0$。
 @sum

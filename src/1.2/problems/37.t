@@ -14,6 +14,8 @@ $vf=qp+r$，$\deg r<\deg p$。代入：
 $$f=upf+(qp+r)g_1=r\,g_1+p\,(uf+qg_1).$$
 令 $f_1=uf+qg_1$，则
 $$f=r\,g_1+p\,f_1.$$
+@flow 部分分式的第一步：把 f 拆成 r g₁ 与 p f₁ 两部分
+[a]f = upf + vf·g₁ -{vf = qp + r}> [b]f = r g₁ + p f₁ -{两边 ÷ p^m g₁}> [c]f/g = r/p^m + f₁/(p^{m−1} g₁)
 @step 证明 $r\ne0$
 若 $r=0$，则 $f=pf_1$，即 $p\mid f$，与题设矛盾。所以 $r\ne0$。
 @step 两边同时除以 $g=p^mg_1$
