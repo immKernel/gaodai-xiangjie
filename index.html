@@ -1,0 +1,429 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>多项式整除详解样章</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&family=Noto+Serif+SC:wght@600;900&display=swap">
+<script>
+window.MathJax = {
+  tex: { inlineMath: [['$', '$'], ['\\(', '\\)']], displayMath: [['$$', '$$']] },
+  svg: { fontCache: 'global' }
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-svg.js" defer></script>
+<style>
+/* Layout: one reading column like a worked-solution notebook; steps are a real sequence, so they are numbered */
+:root {
+  --bg: #f7f8fa;
+  --paper: #ffffff;
+  --fg: #1d2430;
+  --muted: #5b6577;
+  --line: #d9dee7;
+  --accent: #1f4e8c;      /* ink blue: headings, step numbers */
+  --accent-soft: #e6eef9;
+  --idea: #8a5a00;        /* "why think this way" notes */
+  --idea-soft: #fbf3e2;
+  --ok: #1d7a4c;
+  --ok-soft: #e4f4ec;
+  --cancel: #b3363b;
+  --font-display: "Noto Serif SC", "Songti SC", "SimSun", serif;
+  --font-body: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #12161d; --paper: #1a1f28; --fg: #e3e7ee; --muted: #9aa4b5; --line: #2f3746;
+    --accent: #8fb6ef; --accent-soft: #1d2a3d; --idea: #e7b75e; --idea-soft: #2b2416;
+    --ok: #6fd1a0; --ok-soft: #17291f; --cancel: #f08a8e; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #12161d; --paper: #1a1f28; --fg: #e3e7ee; --muted: #9aa4b5; --line: #2f3746;
+  --accent: #8fb6ef; --accent-soft: #1d2a3d; --idea: #e7b75e; --idea-soft: #2b2416;
+  --ok: #6fd1a0; --ok-soft: #17291f; --cancel: #f08a8e; color-scheme: dark;
+}
+body {
+  background: var(--bg); color: var(--fg);
+  font-family: var(--font-body); font-size: 16px; line-height: 1.85;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 32px 64px;
+}
+main { max-width: 760px; margin: 0 auto; display: grid; gap: 40px; }
+h1, h2, h3 { font-family: var(--font-display); text-wrap: balance; line-height: 1.35; margin: 0; }
+h1 { font-size: 1.9rem; font-weight: 900; }
+h2 { font-size: 1.5rem; color: var(--accent); }
+h3 { font-size: 1.12rem; }
+p { margin: 0; }
+.eyebrow { font-size: .8rem; letter-spacing: .12em; color: var(--muted); }
+header { display: grid; gap: 10px; }
+header p { color: var(--muted); }
+
+.card { background: var(--paper); border: 1px solid var(--line); border-radius: 10px; padding: 22px 22px; display: grid; gap: 14px; min-width: 0; }
+.problem { border-left: 4px solid var(--accent); }
+.problem .tag { font-size: .8rem; color: var(--muted); }
+
+section.example { display: grid; gap: 22px; }
+.steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 26px; counter-reset: s; }
+.steps > li { display: grid; grid-template-columns: 34px 1fr; gap: 14px; }
+.steps > li::before {
+  counter-increment: s; content: counter(s);
+  width: 30px; height: 30px; border-radius: 50%;
+  background: var(--accent); color: var(--paper);
+  display: grid; place-items: center; font-weight: 700; font-size: .95rem; margin-top: 2px;
+}
+.steps > li.zero::before { content: "0"; counter-increment: none; background: var(--muted); }
+.step-body { display: grid; gap: 10px; min-width: 0; }
+
+.idea, .check, .pre { border-radius: 8px; padding: 12px 16px; display: grid; gap: 6px; }
+.idea { background: var(--idea-soft); }
+.idea b:first-child { color: var(--idea); }
+.check { background: var(--ok-soft); }
+.check b:first-child { color: var(--ok); }
+.pre { background: var(--accent-soft); }
+.pre b:first-child { color: var(--accent); }
+
+.scroll { overflow-x: auto; }
+mjx-container[display="true"] { overflow-x: auto; overflow-y: hidden; padding-block: 4px; }
+
+table { border-collapse: collapse; font-size: .95rem; min-width: 100%; }
+th, td { border: 1px solid var(--line); padding: 6px 12px; text-align: center; white-space: nowrap; }
+th { background: var(--accent-soft); font-weight: 500; }
+td.hl { background: var(--idea-soft); }
+
+/* cancellation grid */
+.cancel-grid { display: grid; grid-template-columns: 70px repeat(4, minmax(70px, 1fr)); gap: 6px; min-width: 420px; align-items: center; }
+.cancel-grid .lab { color: var(--muted); font-size: .85rem; text-align: right; padding-right: 6px; }
+.cancel-grid .cell { border: 1px solid var(--line); border-radius: 6px; text-align: center; padding: 6px 4px; position: relative; background: var(--paper); }
+.cancel-grid .cell.x { color: var(--muted); border-color: var(--cancel); }
+.cancel-grid .cell.x::after { content: ""; position: absolute; left: 8%; right: 8%; top: 50%; border-top: 2px solid var(--cancel); transform: rotate(-12deg); }
+.cancel-grid .cell.keep { border: 2px solid var(--ok); }
+.cancel-grid .empty { visibility: hidden; }
+.cancel-grid .sum { grid-column: 2 / -1; text-align: center; border-top: 2px solid var(--fg); padding-top: 6px; }
+
+figure { margin: 0; display: grid; gap: 8px; }
+figcaption { font-size: .9rem; color: var(--muted); }
+svg text { font-family: var(--font-body); }
+.sv-line { stroke: var(--fg); fill: none; }
+.sv-faint { stroke: var(--line); fill: none; }
+.sv-acc { stroke: var(--accent); fill: none; }
+.sv-idea { stroke: var(--idea); fill: none; }
+.sv-dot { fill: var(--accent); }
+.sv-txt { fill: var(--fg); font-size: 14px; }
+.sv-muted { fill: var(--muted); font-size: 12px; }
+.sv-acc-txt { fill: var(--accent); font-size: 14px; font-weight: 700; }
+.sv-idea-txt { fill: var(--idea); font-size: 13px; font-weight: 700; }
+
+details { border: 1px dashed var(--line); border-radius: 8px; padding: 10px 16px; }
+summary { cursor: pointer; color: var(--muted); }
+summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+details[open] summary { margin-bottom: 8px; }
+
+.summary-box { border-top: 2px solid var(--accent); padding-top: 14px; display: grid; gap: 8px; }
+ul.tight { margin: 0; padding-left: 1.3em; display: grid; gap: 4px; }
+hr { border: 0; border-top: 1px solid var(--line); margin: 0; }
+
+@media (max-width: 480px) {
+  body { font-size: 15px; }
+  h1 { font-size: 1.55rem; }
+  .card { padding: 16px; }
+  .steps > li { grid-template-columns: 28px 1fr; gap: 10px; }
+  .steps > li::before { width: 26px; height: 26px; font-size: .85rem; }
+}
+</style>
+
+<style>*{box-sizing:border-box}img{max-width:100%}[hidden]{display:none!important}body{margin:0}</style>
+</head>
+<body>
+<main>
+  <header>
+    <div class="eyebrow">高等代数 · 第一章 多项式 · 详解样章</div>
+    <h1>例 1.1 与例 1.2 的小白版讲解</h1>
+    <p>每一步只做一件事，不跳步。绿色框是“用具体数字验算”，黄色框是“为什么会想到这样做”。</p>
+  </header>
+
+  <div class="card pre">
+    <b>先弄懂一个词：“整除”是什么意思？</b>
+    <p>$A \mid B$ 读作“$A$ 整除 $B$”，意思是：<b>$B$ 可以写成 $A$ 乘以某个多项式</b>，即 $B = A\cdot Q$。</p>
+    <p>例如 $x^2 \mid x^3 + x^2$，因为 $x^3+x^2 = x^2\cdot(x+1)$，这里 $Q = x+1$。</p>
+    <p>所以要证明“$A$ 整除 $B$”，最直接的办法就是：<b>把 $B$ 硬算成“$A\times$ 某个东西”的样子</b>。下面两题都是这个思路。</p>
+  </div>
+
+  <!-- ===================== 例 1.1 ===================== -->
+  <section class="example">
+    <h2>例 1.1</h2>
+
+    <div class="card problem">
+      <span class="tag">题目（原书第 2 页）</span>
+      <p>设 $k, n$ 为正整数，令</p>
+      $$f(x) = (x+1)^{k+n} + 2x(x+1)^{k+n-1} + \cdots + (2x)^k (x+1)^n .$$
+      <p>证明：$x^{k+1} \mid (x-1)f(x) + (x+1)^{k+n+1}$。</p>
+    </div>
+
+    <p><b>一句话思路：</b>把 $(x-1)f(x) + (x+1)^{k+n+1}$ 实实在在算出来，会发现它等于 $x^{k+1}\times$ 某个多项式。难点只在于 $f(x)$ 是一长串“$\cdots$”，需要一个公式把它收拢。</p>
+
+    <ol class="steps">
+      <li class="zero"><div class="step-body">
+        <h3>先拿小数字试一试，看看结论长什么样</h3>
+        <p>取最小的 $k=1,\ n=1$。此时 $f(x)$ 只有两项（$2x$ 的次数从 $0$ 到 $k=1$）：</p>
+        $$f(x) = (x+1)^2 + 2x(x+1) = (x+1)(x+1+2x) = (x+1)(3x+1) = 3x^2+4x+1.$$
+        <p>要检查的式子是：</p>
+        $$\begin{aligned}
+        (x-1)f(x) &= (x-1)(3x^2+4x+1) = 3x^3 + x^2 - 3x - 1,\\
+        (x+1)^{3} &= x^3+3x^2+3x+1,\\
+        \text{两者相加} &= 4x^3 + 4x^2 = x^2\cdot 4(x+1).
+        \end{aligned}$$
+        <div class="check"><b>验算结果</b><p>结果确实是 $x^2 = x^{k+1}$ 乘一个多项式，结论成立。而且中间的 $x$ 项、常数项都<b>恰好抵消</b>了，说明背后有个“抵消公式”。下面找出它。</p></div>
+      </div></li>
+
+      <li><div class="step-body">
+        <h3>看清 $f(x)$ 每一项的规律</h3>
+        <p>把 $f(x)$ 的各项排成表格，只看两个括号各自的次数：</p>
+        <div class="scroll">
+          <table>
+            <thead><tr><th>第几项</th><th>$(2x)$ 的次数</th><th>$(x+1)$ 的次数</th><th>两个次数之和</th></tr></thead>
+            <tbody>
+              <tr><td>第 0 项</td><td>$0$</td><td>$k+n$</td><td>$k+n$</td></tr>
+              <tr><td>第 1 项</td><td>$1$</td><td>$k+n-1$</td><td>$k+n$</td></tr>
+              <tr><td>第 2 项</td><td>$2$</td><td>$k+n-2$</td><td>$k+n$</td></tr>
+              <tr><td>$\vdots$</td><td>$\vdots$</td><td>$\vdots$</td><td>$\vdots$</td></tr>
+              <tr><td>第 $k$ 项（最后）</td><td>$k$</td><td class="hl">$n$（最小）</td><td>$k+n$</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>规律：$(2x)$ 的次数一个一个<b>加 1</b>，$(x+1)$ 的次数一个一个<b>减 1</b>，最少也有 $n$ 次。</p>
+      </div></li>
+
+      <li><div class="step-body">
+        <h3>把每项都有的 $(x+1)^n$ 提出来</h3>
+        <p>既然每一项至少含 $n$ 个 $(x+1)$，就像提公因数一样把 $(x+1)^n$ 提到外面：</p>
+        $$f(x) = (x+1)^n\Big[\,(x+1)^{k} + (2x)(x+1)^{k-1} + (2x)^2(x+1)^{k-2} + \cdots + (2x)^k\,\Big].$$
+        <p>检查一下：括号里第 $j$ 项是 $(2x)^j(x+1)^{k-j}$，乘上外面的 $(x+1)^n$ 正好变回原来的 $(2x)^j(x+1)^{k+n-j}$。</p>
+      </div></li>
+
+      <li><div class="step-body">
+        <h3>给两个括号起短名字，认出熟悉的公式</h3>
+        <p>令 $A = x+1,\ B = 2x$。方括号里就变成</p>
+        $$A^k + A^{k-1}B + A^{k-2}B^2 + \cdots + B^k .$$
+        <p>这个样子你其实见过。中学的公式：</p>
+        $$a^2-b^2 = (a-b)(a+b),\qquad a^3-b^3=(a-b)(a^2+ab+b^2).$$
+        <p>第二个公式右边的括号 $a^2+ab+b^2$，正是“$a$ 的次数递减、$b$ 的次数递增”。一般地有：</p>
+        $$\boxed{\,A^{k+1}-B^{k+1} = (A-B)\big(A^k + A^{k-1}B + \cdots + B^k\big)\,}$$
+        <div class="idea"><b>为什么会想到这个公式？</b><p>只要看到一串“一个字母次数往下降、另一个往上升”的和，就该想到它。它其实就是等比数列求和公式，相邻两项的比都是 $B/A$。</p></div>
+      </div></li>
+
+      <li><div class="step-body">
+        <h3>用图看懂这个公式为什么对（以 $k=2$ 为例）</h3>
+        <p>计算 $(A-B)(A^2+AB+B^2)$：先用 $A$ 去乘括号得到第一行，再用 $-B$ 去乘括号得到第二行。把同类项上下对齐：</p>
+        <figure>
+          <div class="scroll">
+            <div class="cancel-grid" role="img" aria-label="A 乘以括号得 A³、A²B、AB²；负 B 乘以括号得负 A²B、负 AB²、负 B³；中间两列上下抵消，只剩 A³ 和 负 B³">
+              <div class="lab">$A\times(\cdots)$</div>
+              <div class="cell keep">$A^3$</div><div class="cell x">$+A^2B$</div><div class="cell x">$+AB^2$</div><div class="cell empty"></div>
+              <div class="lab">$-B\times(\cdots)$</div>
+              <div class="cell empty"></div><div class="cell x">$-A^2B$</div><div class="cell x">$-AB^2$</div><div class="cell keep">$-B^3$</div>
+              <div class="sum">相加：中间全部一正一负抵消，只剩 $A^3 - B^3$</div>
+            </div>
+          </div>
+          <figcaption>红线划掉的是上下抵消的项，绿框是留下来的头和尾。$k$ 更大时也一样：第一行比第二行“错开一格”，中间全消，只剩 $A^{k+1}$ 和 $-B^{k+1}$。</figcaption>
+        </figure>
+      </div></li>
+
+      <li><div class="step-body">
+        <h3>把 $A = x+1,\ B = 2x$ 代回公式</h3>
+        <p>先算 $A - B$：</p>
+        $$A - B = (x+1) - 2x = 1 - x.$$
+        <p>于是公式变成</p>
+        $$(1-x)\Big[(x+1)^{k} + (2x)(x+1)^{k-1} + \cdots + (2x)^k\Big] = (x+1)^{k+1} - (2x)^{k+1}.$$
+        <p>左边的方括号正是第 2 步里 $f(x)$ 的方括号。</p>
+      </div></li>
+
+      <li><div class="step-body">
+        <h3>两边同乘 $(x+1)^n$，左边就凑出了 $f(x)$</h3>
+        <p>由第 2 步，$f(x) = (x+1)^n\times[\text{方括号}]$，所以左边乘 $(x+1)^n$ 后变成 $(1-x)f(x)$：</p>
+        $$\begin{aligned}
+        (1-x)f(x) &= (x+1)^n\Big[(x+1)^{k+1} - (2x)^{k+1}\Big]\\
+        &= (x+1)^{k+n+1} - 2^{k+1}x^{k+1}(x+1)^n .
+        \end{aligned}$$
+        <p>第二行用了两个小事实：$(x+1)^n(x+1)^{k+1} = (x+1)^{k+n+1}$（同底数幂相乘，指数相加）；$(2x)^{k+1} = 2^{k+1}x^{k+1}$。</p>
+      </div></li>
+
+      <li><div class="step-body">
+        <h3>调整成题目要的样子</h3>
+        <p>题目里是 $(x-1)f(x)$，我们手里是 $(1-x)f(x)$。二者只差一个负号：$x-1 = -(1-x)$。把上式两边都乘 $-1$：</p>
+        $$(x-1)f(x) = -(x+1)^{k+n+1} + 2^{k+1}x^{k+1}(x+1)^n .$$
+        <p>两边再同时加上 $(x+1)^{k+n+1}$，右边的 $-(x+1)^{k+n+1}$ 就被消掉：</p>
+        $$(x-1)f(x) + (x+1)^{k+n+1} = 2^{k+1}x^{k+1}(x+1)^n .$$
+      </div></li>
+
+      <li><div class="step-body">
+        <h3>得出结论</h3>
+        <p>右边可以写成</p>
+        $$x^{k+1}\cdot\underbrace{2^{k+1}(x+1)^n}_{Q(x)} .$$
+        <p>$Q(x) = 2^{k+1}(x+1)^n$ 是一个多项式，所以按“整除”的定义，$x^{k+1} \mid (x-1)f(x) + (x+1)^{k+n+1}$。证毕。</p>
+        <div class="check"><b>和第 0 步对一下</b><p>$k=n=1$ 时，公式给出 $2^{2}x^{2}(x+1) = 4x^2(x+1)$，与第 0 步硬算的结果完全一样。</p></div>
+      </div></li>
+    </ol>
+
+    <details>
+      <summary>对照：原书的解析（很短，对比一下哪里被跳过了）</summary>
+      <p>提出每项公有的因式 $(x+1)^n$，得到 $f(x)=(x+1)^n\sum_{j=0}^{k}(2x)^j(x+1)^{k-j}$。对任意 $A,B$，把 $A-B$ 乘到 $\sum_{j=0}^k A^{k-j}B^j$ 上，得到 $A^{k+1}-B^{k+1}$。取 $A=x+1,B=2x$，则 $A-B=1-x$。代入并移项，$(x-1)f(x)+(x+1)^{k+n+1}=2^{k+1}x^{k+1}(x+1)^n$。右端含因式 $x^{k+1}$，所证即得。</p>
+    </details>
+
+    <div class="summary-box">
+      <h3>这题记住什么</h3>
+      <ul class="tight">
+        <li>看到“一个次数降、一个次数升”的一串和，就用 $A^{k+1}-B^{k+1}=(A-B)(\cdots)$ 把它收拢。</li>
+        <li>证明整除，就是把式子算成“除式 × 多项式”。</li>
+        <li>拿 $k=n=1$ 这样的小数字先试，既能找方向，也能验算答案。</li>
+      </ul>
+    </div>
+  </section>
+
+  <hr>
+
+  <!-- ===================== 例 1.2 ===================== -->
+  <section class="example">
+    <h2>例 1.2</h2>
+
+    <div class="card problem">
+      <span class="tag">题目（原书第 2 页）</span>
+      <p>设 $m, n, p$ 是非负整数。证明：$x^2+x+1$ 整除 $x^{3m}+x^{3n+1}+x^{3p+2}$。</p>
+    </div>
+
+    <p><b>一句话思路：</b>$x^2+x+1$ 和 $x^3$ 有一层特殊关系：在“除以 $x^2+x+1$ 看余数”的意义下，$x^3$ 就相当于 $1$。于是题目里那三个很高次的项，各自都能缩成 $1$、$x$、$x^2$，加起来正好是 $x^2+x+1$ 本身。</p>
+
+    <ol class="steps">
+      <li class="zero"><div class="step-body">
+        <h3>先拿小数字试一试</h3>
+        <p>取 $m=n=p=1$：</p>
+        $$x^{3}+x^{4}+x^{5} = x^3(1+x+x^2).$$
+        <div class="check"><b>验算结果</b><p>确实是 $x^2+x+1$ 的倍数。但如果取 $m=0,\ n=1,\ p=2$，式子是 $1+x^4+x^8$，就看不出来了。所以需要一个通用方法。</p></div>
+      </div></li>
+
+      <li><div class="step-body">
+        <h3>关键事实：$x^3-1 = (x-1)(x^2+x+1)$</h3>
+        <p>把右边展开验证一下：</p>
+        $$(x-1)(x^2+x+1) = x^3 + x^2 + x - x^2 - x - 1 = x^3 - 1.$$
+        <p>这说明 <b>$x^3 - 1$ 是 $x^2+x+1$ 的倍数</b>。（这其实就是例 1.1 里那个公式取 $A=x,\ B=1,\ k=2$ 的情形。）</p>
+      </div></li>
+
+      <li><div class="step-body">
+        <h3>推广：$x^{3m}-1$ 也是 $x^2+x+1$ 的倍数</h3>
+        <p>把 $x^{3m}$ 看成 $(x^3)^m$，再用例 1.1 的公式（取 $A = x^3,\ B=1$）：</p>
+        $$x^{3m} - 1 = (x^3)^m - 1^m = (x^3 - 1)\big[(x^3)^{m-1} + (x^3)^{m-2} + \cdots + 1\big].$$
+        <p>它是 $x^3-1$ 的倍数，而 $x^3-1$ 又是 $x^2+x+1$ 的倍数，所以 $x^{3m}-1$ 是 $x^2+x+1$ 的倍数。</p>
+        <p>如果 $m=0$，那么 $x^{0}-1 = 0$，而 $0 = (x^2+x+1)\cdot 0$，也算倍数。所以对所有非负整数 $m$ 都成立。同理 $x^{3n}-1$、$x^{3p}-1$ 也都是倍数。</p>
+      </div></li>
+
+      <li><div class="step-body">
+        <h3>把要证的式子“拆”成几个倍数相加</h3>
+        <p>记 $g(x) = x^{3m}+x^{3n+1}+x^{3p+2}$。这里用一个技巧：先减去 $1+x+x^2$，再加回来。</p>
+        $$\begin{aligned}
+        g(x) &= \big(x^{3m} - 1\big) + \big(x^{3n+1} - x\big) + \big(x^{3p+2} - x^2\big) + \big(1 + x + x^2\big)\\[2pt]
+        &= \underbrace{\big(x^{3m} - 1\big)}_{\text{倍数}} + x\underbrace{\big(x^{3n} - 1\big)}_{\text{倍数}} + x^2\underbrace{\big(x^{3p} - 1\big)}_{\text{倍数}} + \underbrace{\big(x^2 + x + 1\big)}_{\text{它本身}}.
+        \end{aligned}$$
+        <p>第二行是把 $x^{3n+1}-x$ 提出一个 $x$，把 $x^{3p+2}-x^2$ 提出一个 $x^2$。</p>
+      </div></li>
+
+      <li><div class="step-body">
+        <h3>得出结论</h3>
+        <p>四个部分每一个都是 $x^2+x+1$ 的倍数（倍数乘以 $x$、$x^2$ 还是倍数）。几个倍数加起来还是倍数，所以</p>
+        $$x^2+x+1 \;\big|\; x^{3m}+x^{3n+1}+x^{3p+2}.\qquad\text{证毕。}$$
+      </div></li>
+    </ol>
+
+    <div class="card">
+      <h3>用图理解：“$x^3$ 相当于 $1$”像一个只有 3 格的钟</h3>
+      <p>第 2、3 步说明，除以 $x^2+x+1$ 只看余数时，每遇到一个 $x^3$ 都可以换成 $1$。所以 $x$ 的指数只需要看<b>除以 3 的余数</b>：每乘一次 $x$，指针就往前走一格，走 3 格回到起点。</p>
+      <figure>
+        <div class="scroll">
+          <svg viewBox="0 0 460 300" width="100%" style="max-width:460px;min-width:380px" role="img" aria-label="三格钟：指数除以3余0的都相当于1，余1的都相当于x，余2的都相当于x平方，每乘一次x转一格">
+            <defs>
+              <marker id="arr1" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                <path d="M0,0 L10,5 L0,10 z" style="fill:var(--idea)"/>
+              </marker>
+            </defs>
+            <circle cx="230" cy="150" r="80" class="sv-faint" stroke-width="1.5"/>
+            <path d="M308.8,136.1 A80,80 0 0 0 202.6,74.8" class="sv-idea" stroke-width="2" marker-end="url(#arr1)"/>
+            <path d="M178.6,88.7 A80,80 0 0 0 178.6,211.3" class="sv-idea" stroke-width="2" marker-end="url(#arr1)"/>
+            <path d="M202.6,225.2 A80,80 0 0 0 308.8,163.9" class="sv-idea" stroke-width="2" marker-end="url(#arr1)"/>
+            <text x="282" y="70" class="sv-idea-txt">×x</text>
+            <text x="134" y="155" class="sv-idea-txt">×x</text>
+            <text x="282" y="244" class="sv-idea-txt">×x</text>
+            <circle cx="310" cy="150" r="7" class="sv-dot"/>
+            <circle cx="190" cy="80.7" r="7" class="sv-dot"/>
+            <circle cx="190" cy="219.3" r="7" class="sv-dot"/>
+            <text x="324" y="146" class="sv-acc-txt">相当于 1</text>
+            <text x="324" y="166" class="sv-muted">x⁰, x³, x⁶, x⁹ …</text>
+            <text x="176" y="58" text-anchor="end" class="sv-acc-txt">相当于 x</text>
+            <text x="176" y="76" text-anchor="end" class="sv-muted">x¹, x⁴, x⁷ …</text>
+            <text x="176" y="232" text-anchor="end" class="sv-acc-txt">相当于 x²</text>
+            <text x="176" y="250" text-anchor="end" class="sv-muted">x², x⁵, x⁸ …</text>
+            <text x="230" y="155" text-anchor="middle" class="sv-muted">走 3 格回到起点</text>
+          </svg>
+        </div>
+        <figcaption>题目的三项：$x^{3m}$ 的指数除以 3 余 0，落在“1”格；$x^{3n+1}$ 余 1，落在“$x$”格；$x^{3p+2}$ 余 2，落在“$x^2$”格。三格各占一个，加起来就是 $1+x+x^2$，正好是除式本身，所以余数为 $0$。</figcaption>
+      </figure>
+      <p>拿第 0 步里看不出来的 $1+x^4+x^8$ 试一下：指数 $0,4,8$ 除以 3 分别余 $0,1,2$，三格各一个，所以它也能被 $x^2+x+1$ 整除。</p>
+    </div>
+
+    <div class="card">
+      <h3>另一种看法：用根，在复平面上画出来</h3>
+      <p>解方程 $x^2+x+1=0$，用求根公式得两个根：</p>
+      $$\omega = \frac{-1+\sqrt{3}\,i}{2},\qquad \omega^2 = \frac{-1-\sqrt{3}\,i}{2}.$$
+      <p>由第 1 步，$\omega^3 - 1 = (\omega-1)(\omega^2+\omega+1) = (\omega-1)\cdot 0 = 0$，所以 $\omega^3 = 1$。</p>
+      <figure>
+        <div class="scroll">
+          <svg viewBox="0 0 420 300" width="100%" style="max-width:420px;min-width:360px" role="img" aria-label="复平面单位圆上的三个点 1、ω、ω平方，彼此相隔120度，三个箭头首尾相接围成等边三角形回到原点">
+            <defs>
+              <marker id="arr2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                <path d="M0,0 L10,5 L0,10 z" style="fill:var(--accent)"/>
+              </marker>
+            </defs>
+            <line x1="40" y1="150" x2="390" y2="150" class="sv-faint" stroke-width="1.2"/>
+            <line x1="210" y1="20" x2="210" y2="285" class="sv-faint" stroke-width="1.2"/>
+            <text x="388" y="168" text-anchor="end" class="sv-muted">实轴</text>
+            <text x="218" y="32" class="sv-muted">虚轴</text>
+            <circle cx="210" cy="150" r="100" class="sv-faint" stroke-width="1.5" stroke-dasharray="3 4"/>
+            <line x1="210" y1="150" x2="305" y2="150" class="sv-acc" stroke-width="2.4" marker-end="url(#arr2)"/>
+            <line x1="210" y1="150" x2="162.5" y2="67.7" class="sv-acc" stroke-width="2.4" marker-end="url(#arr2)"/>
+            <line x1="210" y1="150" x2="162.5" y2="232.3" class="sv-acc" stroke-width="2.4" marker-end="url(#arr2)"/>
+            <path d="M310,150 L260,63.4 L210,150" class="sv-idea" stroke-width="2" stroke-dasharray="6 4"/>
+            <circle cx="310" cy="150" r="5" class="sv-dot"/>
+            <circle cx="160" cy="63.4" r="5" class="sv-dot"/>
+            <circle cx="160" cy="236.6" r="5" class="sv-dot"/>
+            <text x="318" y="143" class="sv-acc-txt">1</text>
+            <text x="150" y="56" text-anchor="end" class="sv-acc-txt">ω</text>
+            <text x="150" y="252" text-anchor="end" class="sv-acc-txt">ω²</text>
+            <path d="M235,150 A25,25 0 0 0 197.5,128.3" class="sv-line" stroke-width="1"/>
+            <text x="232" y="128" class="sv-muted">120°</text>
+            <text x="292" y="95" class="sv-idea-txt">虚线：首尾相接</text>
+          </svg>
+        </div>
+        <figcaption>$1,\ \omega,\ \omega^2$ 都在半径为 1 的圆上，彼此相差 $120^\circ$。每乘一次 $\omega$ 就逆时针转 $120^\circ$，转 3 次回到 $1$，这正是上面那个“3 格钟”。三个箭头首尾相接（虚线）围成等边三角形，回到原点，所以 $1+\omega+\omega^2 = 0$。</figcaption>
+      </figure>
+      <p><b>代入 $\omega$：</b>$g(\omega) = \omega^{3m} + \omega^{3n+1} + \omega^{3p+2} = 1 + \omega + \omega^2 = 0$。</p>
+      <p><b>代入 $\omega^2$：</b>$(\omega^2)^{3m}=1$，$(\omega^2)^{3n+1} = \omega^{6n}\cdot\omega^2 = \omega^2$，$(\omega^2)^{3p+2} = \omega^{6p}\cdot\omega^{4} = \omega$，所以 $g(\omega^2) = 1+\omega^2+\omega = 0$。</p>
+      <p>$x^2+x+1$ 的两个根 $\omega, \omega^2$ 都是 $g(x)$ 的根，并且这两个根不相等，所以 $x^2+x+1 = (x-\omega)(x-\omega^2)$ 整除 $g(x)$。</p>
+      <div class="idea"><b>说明</b><p>这个方法借用了复数。整除关系不会因为“在实数里算”还是“在复数里算”而改变（带余除法的商和余数是同一个），所以结论在实系数多项式里同样成立。考试中两种写法都可以，前一种（拆成倍数）完全不用复数，更稳妥。</p></div>
+    </div>
+
+    <details>
+      <summary>对照：原书的解析</summary>
+      <p>因 $x^3-1=(x-1)(x^2+x+1)$，模 $x^2+x+1$ 有 $x^3\equiv 1$。于是 $x^{3m}\equiv 1,\ x^{3n+1}=x(x^3)^n\equiv x,\ x^{3p+2}=x^2(x^3)^p\equiv x^2$。三式相加，得到被除式同余于 $1+x+x^2$，而它本身就是除式，故原式同余于零。</p>
+    </details>
+
+    <div class="summary-box">
+      <h3>这题记住什么</h3>
+      <ul class="tight">
+        <li>除式是 $x^2+x+1$ 时，先想到 $x^3-1=(x-1)(x^2+x+1)$，于是 $x^3$“相当于”$1$，指数只看除以 3 的余数。</li>
+        <li>严格写法：减去 $1+x+x^2$ 再加回来，把式子拆成几个倍数之和。</li>
+        <li>另一条路：找出除式的根，代入被除式看是不是 $0$。</li>
+      </ul>
+    </div>
+  </section>
+</main>
+</body>
+</html>
