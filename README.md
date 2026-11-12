@@ -4,7 +4,7 @@
 产物：每个小节一个**离线可打开**的 HTML（公式预渲染成 SVG，不依赖 MathJax/Google Fonts，国内也能打开），通过 GitHub Pages 发布。
 
 - 在线：<https://immkernel.github.io/gaodai-xiangjie/>（1.1，`index.html`）、<https://immkernel.github.io/gaodai-xiangjie/1.2.html>（1.2）
-- 已完成：1.1（例1.1–1.14）、1.2（例1.15–1.37，含 18 张图）、1.3（例1.38–1.62，含 36 张图）。下一个小节是 1.4（例1.63 起，本书 PDF 第 32 页起，开头有一段“本原多项式/高斯引理/有理根判据”的说明，应写进 intro.t）。
+- 已完成：1.1（例1.1–1.14）、1.2（例1.15–1.37，含 21 张图）、1.3（例1.38–1.62，含 36 张图）。下一个小节是 1.4（例1.63 起，本书 PDF 第 32 页起，开头有一段“本原多项式/高斯引理/有理根判据”的说明，应写进 intro.t）。
   1.3 页面：<https://immkernel.github.io/gaodai-xiangjie/1.3.html>
 
 ## 1. 目录与命令
