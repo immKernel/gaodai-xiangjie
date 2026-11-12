@@ -1,0 +1,56 @@
+  <section class="example" id="ex1-5">
+    <h2>例 1.5</h2>
+
+    <div class="card problem">
+      <span class="tag">题目（原书第 3–4 页）</span>
+      <p>设整数 $m\gt 1$，$f(x) = x^{m-1} + x^{m-2} + \cdots + x + 1$。求使 $f(x) \mid f(x^m) + c$ 的全部常数 $c$。</p>
+    </div>
+
+    <p><b>一句话思路：</b>和例 1.2 一样，“除以 $f(x)$ 看余数”时 $x^m$ 相当于 $1$。于是 $f(x^m)$ 的 $m$ 项每一项都相当于 $1$，合起来相当于 $m$。要整除，就得把这个 $m$ 抵消掉，所以 $c=-m$。</p>
+
+    <ol class="steps">
+      <li class="zero"><div class="step-body">
+        <h3>先试 $m=2$</h3>
+        <p>$f(x) = x+1$，$f(x^2) = x^2+1$。要 $x+1 \mid x^2+1+c$，就是 $x=-1$ 代进去等于 $0$（因式定理）：</p>
+        $$(-1)^2 + 1 + c = 2 + c = 0\quad\Rightarrow\quad c = -2 = -m.$$
+        <div class="check"><b>猜想</b><p>答案可能是 $c=-m$。下面证明。</p></div>
+      </div></li>
+
+      <li><div class="step-body">
+        <h3>关键事实：$x^m - 1 = (x-1)f(x)$</h3>
+        <p>这是例 1.1 里的公式（$A=x, B=1$）：</p>
+        $$(x-1)(x^{m-1}+\cdots+x+1) = x^m - 1.$$
+        <p>所以 $x^m-1$ 是 $f(x)$ 的倍数。再由例 1.2 第 3 步的同样理由，对每个 $j\ge 1$，$x^{mj}-1 = (x^m)^j - 1$ 也是 $x^m-1$ 的倍数，从而是 $f(x)$ 的倍数。</p>
+      </div></li>
+
+      <li><div class="step-body">
+        <h3>写出 $f(x^m)$，减去 $m$</h3>
+        <p>把 $f$ 里的 $x$ 全换成 $x^m$：</p>
+        $$f(x^m) = x^{m(m-1)} + x^{m(m-2)} + \cdots + x^{m} + 1 \qquad(\text{共 } m \text{ 项}).$$
+        <p>减去 $m$，就是给 $m$ 项每项各减一个 $1$：</p>
+        $$f(x^m) - m = \big(x^{m(m-1)}-1\big) + \big(x^{m(m-2)}-1\big) + \cdots + \big(x^{m}-1\big) + \underbrace{(1-1)}_{=0}.$$
+        <p>每个括号都是 $f(x)$ 的倍数（第 1 步），所以 <b>$f(x) \mid f(x^m) - m$</b>。也就是说 $c=-m$ 满足条件。</p>
+      </div></li>
+
+      <li><div class="step-body">
+        <h3>证明只有 $c=-m$ 这一个答案</h3>
+        <p>假设某个 $c$ 也满足 $f(x)\mid f(x^m)+c$。它和第 2 步的结论相减：</p>
+        $$\big(f(x^m)+c\big) - \big(f(x^m)-m\big) = c + m.$$
+        <p>两个 $f$ 的倍数相减还是倍数，所以 $f(x) \mid c+m$。</p>
+        <p>但 $c+m$ 是常数，而 $f$ 的次数是 $m-1\ge 1$。一个次数 $\ge1$ 的多项式乘以任何非零多项式，次数都 $\ge 1$，不可能等于非零常数。所以只能 $c+m = 0$，即 $c=-m$。</p>
+      </div></li>
+    </ol>
+
+    <div class="idea"><b>和例 1.2 的“钟”连起来</b>
+      <p>$m=3$ 时 $f = x^2+x+1$，这正是例 1.2 那个 3 格的钟：$f(x^3) = x^6 + x^3 + 1$，三项的指数都是 3 的倍数，全落在“1”格，加起来相当于 $3$。所以 $c=-3$。一般的 $m$ 就是一个 $m$ 格的钟。</p>
+    </div>
+
+    <div class="summary-box">
+      <h3>这题记住什么</h3>
+      <ul class="tight">
+        <li>除式是 $1+x+\cdots+x^{m-1}$ 时，$x^m$ 相当于 $1$。</li>
+        <li>“求所有满足条件的值”要做两件事：找到一个，再证明别的都不行。</li>
+        <li>次数 $\ge 1$ 的多项式只能整除常数 $0$。</li>
+      </ul>
+    </div>
+  </section>

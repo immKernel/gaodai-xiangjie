@@ -1,0 +1,140 @@
+  <section class="example" id="ex1-2">
+    <h2>例 1.2</h2>
+
+    <div class="card problem">
+      <span class="tag">题目（原书第 2 页）</span>
+      <p>设 $m, n, p$ 是非负整数。证明：$x^2+x+1$ 整除 $x^{3m}+x^{3n+1}+x^{3p+2}$。</p>
+    </div>
+
+    <p><b>一句话思路：</b>$x^2+x+1$ 和 $x^3$ 有一层特殊关系：在“除以 $x^2+x+1$ 看余数”的意义下，$x^3$ 就相当于 $1$。于是题目里那三个很高次的项，各自都能缩成 $1$、$x$、$x^2$，加起来正好是 $x^2+x+1$ 本身。</p>
+
+    <ol class="steps">
+      <li class="zero"><div class="step-body">
+        <h3>先拿小数字试一试</h3>
+        <p>取 $m=n=p=1$：</p>
+        $$x^{3}+x^{4}+x^{5} = x^3(1+x+x^2).$$
+        <div class="check"><b>验算结果</b><p>确实是 $x^2+x+1$ 的倍数。但如果取 $m=0,\ n=1,\ p=2$，式子是 $1+x^4+x^8$，就看不出来了。所以需要一个通用方法。</p></div>
+      </div></li>
+
+      <li><div class="step-body">
+        <h3>关键事实：$x^3-1 = (x-1)(x^2+x+1)$</h3>
+        <p>把右边展开验证一下：</p>
+        $$(x-1)(x^2+x+1) = x^3 + x^2 + x - x^2 - x - 1 = x^3 - 1.$$
+        <p>这说明 <b>$x^3 - 1$ 是 $x^2+x+1$ 的倍数</b>。（这其实就是例 1.1 里那个公式取 $A=x,\ B=1,\ k=2$ 的情形。）</p>
+      </div></li>
+
+      <li><div class="step-body">
+        <h3>推广：$x^{3m}-1$ 也是 $x^2+x+1$ 的倍数</h3>
+        <p>把 $x^{3m}$ 看成 $(x^3)^m$，再用例 1.1 的公式（取 $A = x^3,\ B=1$）：</p>
+        $$x^{3m} - 1 = (x^3)^m - 1^m = (x^3 - 1)\big[(x^3)^{m-1} + (x^3)^{m-2} + \cdots + 1\big].$$
+        <p>它是 $x^3-1$ 的倍数，而 $x^3-1$ 又是 $x^2+x+1$ 的倍数，所以 $x^{3m}-1$ 是 $x^2+x+1$ 的倍数。</p>
+        <p>如果 $m=0$，那么 $x^{0}-1 = 0$，而 $0 = (x^2+x+1)\cdot 0$，也算倍数。所以对所有非负整数 $m$ 都成立。同理 $x^{3n}-1$、$x^{3p}-1$ 也都是倍数。</p>
+      </div></li>
+
+      <li><div class="step-body">
+        <h3>把要证的式子“拆”成几个倍数相加</h3>
+        <p>记 $g(x) = x^{3m}+x^{3n+1}+x^{3p+2}$。这里用一个技巧：先减去 $1+x+x^2$，再加回来。</p>
+        $$\begin{aligned}
+        g(x) &= \big(x^{3m} - 1\big) + \big(x^{3n+1} - x\big) + \big(x^{3p+2} - x^2\big) + \big(1 + x + x^2\big)\\[2pt]
+        &= \underbrace{\big(x^{3m} - 1\big)}_{\text{倍数}} + x\underbrace{\big(x^{3n} - 1\big)}_{\text{倍数}} + x^2\underbrace{\big(x^{3p} - 1\big)}_{\text{倍数}} + \underbrace{\big(x^2 + x + 1\big)}_{\text{它本身}}.
+        \end{aligned}$$
+        <p>第二行是把 $x^{3n+1}-x$ 提出一个 $x$，把 $x^{3p+2}-x^2$ 提出一个 $x^2$。</p>
+      </div></li>
+
+      <li><div class="step-body">
+        <h3>得出结论</h3>
+        <p>四个部分每一个都是 $x^2+x+1$ 的倍数（倍数乘以 $x$、$x^2$ 还是倍数）。几个倍数加起来还是倍数，所以</p>
+        $$x^2+x+1 \;\big|\; x^{3m}+x^{3n+1}+x^{3p+2}.\qquad\text{证毕。}$$
+      </div></li>
+    </ol>
+
+    <div class="card">
+      <h3>用图理解：“$x^3$ 相当于 $1$”像一个只有 3 格的钟</h3>
+      <p>第 2、3 步说明，除以 $x^2+x+1$ 只看余数时，每遇到一个 $x^3$ 都可以换成 $1$。所以 $x$ 的指数只需要看<b>除以 3 的余数</b>：每乘一次 $x$，指针就往前走一格，走 3 格回到起点。</p>
+      <figure>
+        <div class="scroll">
+          <svg viewBox="0 0 460 300" width="100%" style="max-width:460px;min-width:380px" role="img" aria-label="三格钟：指数除以3余0的都相当于1，余1的都相当于x，余2的都相当于x平方，每乘一次x转一格">
+            <defs>
+              <marker id="arr1" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                <path d="M0,0 L10,5 L0,10 z" style="fill:var(--idea)"/>
+              </marker>
+            </defs>
+            <circle cx="230" cy="150" r="80" class="sv-faint" stroke-width="1.5"/>
+            <path d="M308.8,136.1 A80,80 0 0 0 202.6,74.8" class="sv-idea" stroke-width="2" marker-end="url(#arr1)"/>
+            <path d="M178.6,88.7 A80,80 0 0 0 178.6,211.3" class="sv-idea" stroke-width="2" marker-end="url(#arr1)"/>
+            <path d="M202.6,225.2 A80,80 0 0 0 308.8,163.9" class="sv-idea" stroke-width="2" marker-end="url(#arr1)"/>
+            <text x="282" y="70" class="sv-idea-txt">×x</text>
+            <text x="134" y="155" class="sv-idea-txt">×x</text>
+            <text x="282" y="244" class="sv-idea-txt">×x</text>
+            <circle cx="310" cy="150" r="7" class="sv-dot"/>
+            <circle cx="190" cy="80.7" r="7" class="sv-dot"/>
+            <circle cx="190" cy="219.3" r="7" class="sv-dot"/>
+            <text x="324" y="146" class="sv-acc-txt">相当于 1</text>
+            <text x="324" y="166" class="sv-muted">x⁰, x³, x⁶, x⁹ …</text>
+            <text x="176" y="58" text-anchor="end" class="sv-acc-txt">相当于 x</text>
+            <text x="176" y="76" text-anchor="end" class="sv-muted">x¹, x⁴, x⁷ …</text>
+            <text x="176" y="232" text-anchor="end" class="sv-acc-txt">相当于 x²</text>
+            <text x="176" y="250" text-anchor="end" class="sv-muted">x², x⁵, x⁸ …</text>
+            <text x="230" y="155" text-anchor="middle" class="sv-muted">走 3 格回到起点</text>
+          </svg>
+        </div>
+        <figcaption>题目的三项：$x^{3m}$ 的指数除以 3 余 0，落在“1”格；$x^{3n+1}$ 余 1，落在“$x$”格；$x^{3p+2}$ 余 2，落在“$x^2$”格。三格各占一个，加起来就是 $1+x+x^2$，正好是除式本身，所以余数为 $0$。</figcaption>
+      </figure>
+      <p>拿第 0 步里看不出来的 $1+x^4+x^8$ 试一下：指数 $0,4,8$ 除以 3 分别余 $0,1,2$，三格各一个，所以它也能被 $x^2+x+1$ 整除。</p>
+    </div>
+
+    <div class="card">
+      <h3>另一种看法：用根，在复平面上画出来</h3>
+      <p>解方程 $x^2+x+1=0$，用求根公式得两个根：</p>
+      $$\omega = \frac{-1+\sqrt{3}\,i}{2},\qquad \omega^2 = \frac{-1-\sqrt{3}\,i}{2}.$$
+      <p>由第 1 步，$\omega^3 - 1 = (\omega-1)(\omega^2+\omega+1) = (\omega-1)\cdot 0 = 0$，所以 $\omega^3 = 1$。</p>
+      <figure>
+        <div class="scroll">
+          <svg viewBox="0 0 420 300" width="100%" style="max-width:420px;min-width:360px" role="img" aria-label="复平面单位圆上的三个点 1、ω、ω平方，彼此相隔120度，三个箭头首尾相接围成等边三角形回到原点">
+            <defs>
+              <marker id="arr2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                <path d="M0,0 L10,5 L0,10 z" style="fill:var(--accent)"/>
+              </marker>
+            </defs>
+            <line x1="40" y1="150" x2="390" y2="150" class="sv-faint" stroke-width="1.2"/>
+            <line x1="210" y1="20" x2="210" y2="285" class="sv-faint" stroke-width="1.2"/>
+            <text x="388" y="168" text-anchor="end" class="sv-muted">实轴</text>
+            <text x="218" y="32" class="sv-muted">虚轴</text>
+            <circle cx="210" cy="150" r="100" class="sv-faint" stroke-width="1.5" stroke-dasharray="3 4"/>
+            <line x1="210" y1="150" x2="305" y2="150" class="sv-acc" stroke-width="2.4" marker-end="url(#arr2)"/>
+            <line x1="210" y1="150" x2="162.5" y2="67.7" class="sv-acc" stroke-width="2.4" marker-end="url(#arr2)"/>
+            <line x1="210" y1="150" x2="162.5" y2="232.3" class="sv-acc" stroke-width="2.4" marker-end="url(#arr2)"/>
+            <path d="M310,150 L260,63.4 L210,150" class="sv-idea" stroke-width="2" stroke-dasharray="6 4"/>
+            <circle cx="310" cy="150" r="5" class="sv-dot"/>
+            <circle cx="160" cy="63.4" r="5" class="sv-dot"/>
+            <circle cx="160" cy="236.6" r="5" class="sv-dot"/>
+            <text x="318" y="143" class="sv-acc-txt">1</text>
+            <text x="150" y="56" text-anchor="end" class="sv-acc-txt">ω</text>
+            <text x="150" y="252" text-anchor="end" class="sv-acc-txt">ω²</text>
+            <path d="M235,150 A25,25 0 0 0 197.5,128.3" class="sv-line" stroke-width="1"/>
+            <text x="232" y="128" class="sv-muted">120°</text>
+            <text x="292" y="95" class="sv-idea-txt">虚线：首尾相接</text>
+          </svg>
+        </div>
+        <figcaption>$1,\ \omega,\ \omega^2$ 都在半径为 1 的圆上，彼此相差 $120^\circ$。每乘一次 $\omega$ 就逆时针转 $120^\circ$，转 3 次回到 $1$，这正是上面那个“3 格钟”。三个箭头首尾相接（虚线）围成等边三角形，回到原点，所以 $1+\omega+\omega^2 = 0$。</figcaption>
+      </figure>
+      <p><b>代入 $\omega$：</b>$g(\omega) = \omega^{3m} + \omega^{3n+1} + \omega^{3p+2} = 1 + \omega + \omega^2 = 0$。</p>
+      <p><b>代入 $\omega^2$：</b>$(\omega^2)^{3m}=1$，$(\omega^2)^{3n+1} = \omega^{6n}\cdot\omega^2 = \omega^2$，$(\omega^2)^{3p+2} = \omega^{6p}\cdot\omega^{4} = \omega$，所以 $g(\omega^2) = 1+\omega^2+\omega = 0$。</p>
+      <p>$x^2+x+1$ 的两个根 $\omega, \omega^2$ 都是 $g(x)$ 的根，并且这两个根不相等，所以 $x^2+x+1 = (x-\omega)(x-\omega^2)$ 整除 $g(x)$。</p>
+      <div class="idea"><b>说明</b><p>这个方法借用了复数。整除关系不会因为“在实数里算”还是“在复数里算”而改变（带余除法的商和余数是同一个），所以结论在实系数多项式里同样成立。考试中两种写法都可以，前一种（拆成倍数）完全不用复数，更稳妥。</p></div>
+    </div>
+
+    <details>
+      <summary>对照：原书的解析</summary>
+      <p>因 $x^3-1=(x-1)(x^2+x+1)$，模 $x^2+x+1$ 有 $x^3\equiv 1$。于是 $x^{3m}\equiv 1,\ x^{3n+1}=x(x^3)^n\equiv x,\ x^{3p+2}=x^2(x^3)^p\equiv x^2$。三式相加，得到被除式同余于 $1+x+x^2$，而它本身就是除式，故原式同余于零。</p>
+    </details>
+
+    <div class="summary-box">
+      <h3>这题记住什么</h3>
+      <ul class="tight">
+        <li>除式是 $x^2+x+1$ 时，先想到 $x^3-1=(x-1)(x^2+x+1)$，于是 $x^3$“相当于”$1$，指数只看除以 3 的余数。</li>
+        <li>严格写法：减去 $1+x+x^2$ 再加回来，把式子拆成几个倍数之和。</li>
+        <li>另一条路：找出除式的根，代入被除式看是不是 $0$。</li>
+      </ul>
+    </div>
+  </section>

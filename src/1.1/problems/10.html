@@ -1,0 +1,75 @@
+  <section class="example" id="ex1-10">
+    <h2>例 1.10</h2>
+
+    <div class="card problem">
+      <span class="tag">题目（原书第 5 页）</span>
+      <p>设 $f_0, f_1, f_2, f_3$ 为多项式。若 $x^4+x^3+x^2+x+1$ 整除</p>
+      $$f_0(x^5) + x\,f_1(x^{10}) + x^2 f_2(x^{15}) + x^3 f_3(x^{20}),$$
+      <p>证明 $x-1 \mid f_i(x)$ 对 $i=0,1,2,3$ 都成立。</p>
+    </div>
+
+    <p><b>一句话思路：</b>例 1.2 第二种方法的“5 格版”。把除式的 4 个根代进去，$x^5, x^{10}, x^{15}, x^{20}$ 全变成 $1$，得到关于 $f_0(1),\dots,f_3(1)$ 的 4 个等式，由此推出它们全是 $0$。而 $f_i(1)=0$ 正是 $x-1\mid f_i$。</p>
+
+    <ol class="steps">
+      <li><div class="step-body">
+        <h3>找出除式的根</h3>
+        <p>由例 1.1 的公式，$(x-1)(x^4+x^3+x^2+x+1) = x^5-1$。$x^5 - 1$ 的根是单位圆上 5 等分点：$1, \omega, \omega^2, \omega^3, \omega^4$，其中 $\omega = \cos 72^\circ + i\sin72^\circ$。去掉 $x-1$ 的根 $1$，剩下的 $\omega,\omega^2,\omega^3,\omega^4$ 就是除式的 4 个根，并且互不相同。</p>
+        <figure>
+          <div class="scroll">
+            <svg viewBox="0 0 300 240" width="100%" style="max-width:300px;min-width:260px" role="img" aria-label="单位圆上的五等分点：1 空心，ω 到 ω⁴ 实心">
+              <circle cx="150" cy="120" r="80" class="sv-faint" stroke-width="1.5"/>
+              <path d="M230,120 L174.7,43.9 L85.3,73 L85.3,167 L174.7,196.1 Z" class="sv-faint" stroke-width="1"/>
+              <circle cx="230" cy="120" r="6" class="sv-idea" stroke-width="2"/>
+              <circle cx="174.7" cy="43.9" r="6" class="sv-dot"/>
+              <circle cx="85.3" cy="73" r="6" class="sv-dot"/>
+              <circle cx="85.3" cy="167" r="6" class="sv-dot"/>
+              <circle cx="174.7" cy="196.1" r="6" class="sv-dot"/>
+              <text x="242" y="125" class="sv-idea-txt">1</text>
+              <text x="184" y="34" class="sv-acc-txt">ω</text>
+              <text x="70" y="64" text-anchor="end" class="sv-acc-txt">ω²</text>
+              <text x="70" y="186" text-anchor="end" class="sv-acc-txt">ω³</text>
+              <text x="184" y="218" class="sv-acc-txt">ω⁴</text>
+            </svg>
+          </div>
+          <figcaption>实心点是除式 $x^4+x^3+x^2+x+1$ 的 4 个根；空心的 $1$ 是 $x-1$ 的根，不算在内。</figcaption>
+        </figure>
+      </div></li>
+
+      <li><div class="step-body">
+        <h3>整除意味着：代入根，被除式等于 $0$</h3>
+        <p>记被除式为 $G(x)$。整除就是 $G = (x^4+\cdots+1)\cdot Q$。代入除式的根，右边是 $0\times Q = 0$，所以 $G(\omega^k) = 0$，$k=1,2,3,4$。</p>
+      </div></li>
+
+      <li><div class="step-body">
+        <h3>代入后 $x^5, x^{10},x^{15},x^{20}$ 都变成 $1$</h3>
+        <p>因为 $(\omega^k)^5 = (\omega^5)^k = 1$，所以 $(\omega^k)^{10}, (\omega^k)^{15}, (\omega^k)^{20}$ 也都是 $1$。于是</p>
+        $$G(\omega^k) = f_0(1) + \omega^k f_1(1) + (\omega^k)^2 f_2(1) + (\omega^k)^3 f_3(1) = 0,\quad k = 1,2,3,4.$$
+      </div></li>
+
+      <li><div class="step-body">
+        <h3>换个角度看这 4 个等式</h3>
+        <p>$f_0(1), f_1(1), f_2(1), f_3(1)$ 只是 4 个数，把它们当成系数，造一个新多项式：</p>
+        $$R(t) = f_0(1) + f_1(1)\,t + f_2(1)\,t^2 + f_3(1)\,t^3.$$
+        <p>第 3 步说的正是 $R(\omega) = R(\omega^2) = R(\omega^3) = R(\omega^4) = 0$：$R$ 有 4 个不同的根。</p>
+      </div></li>
+
+      <li><div class="step-body">
+        <h3>次数 $\le3$ 却有 4 个根，只能是零多项式</h3>
+        <p>非零多项式的不同根的个数不超过它的次数。$R$ 的次数最多是 $3$，却有 $4$ 个不同的根，所以 $R$ 是零多项式，它的所有系数都是 $0$：</p>
+        $$f_0(1) = f_1(1) = f_2(1) = f_3(1) = 0.$$
+      </div></li>
+
+      <li><div class="step-body">
+        <h3>用因式定理收尾</h3>
+        <p>因式定理：$f(1) = 0 \iff (x-1)\mid f(x)$。所以 $x-1 \mid f_i(x)$，$i=0,1,2,3$。证毕。</p>
+      </div></li>
+    </ol>
+
+    <div class="summary-box">
+      <h3>这题记住什么</h3>
+      <ul class="tight">
+        <li>除式是 $1+x+\cdots+x^{m-1}$ 时，它的根是 $m$ 次单位根（除去 $1$），代进去 $x^m$ 变成 $1$。</li>
+        <li>“次数 $\le n$ 的多项式有 $n+1$ 个不同的根 $\Rightarrow$ 它是零多项式”，是证明系数全为 $0$ 的常用工具。</li>
+      </ul>
+    </div>
+  </section>

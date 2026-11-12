@@ -1,0 +1,49 @@
+  <section class="example" id="ex1-12">
+    <h2>例 1.12</h2>
+
+    <div class="card problem">
+      <span class="tag">题目（原书第 6 页）</span>
+      <p>设 $f(x)$ 是次数大于零的复系数多项式，且 $f\big(f(x)\big) = f(x)^n$，其中 $n$ 为正整数。证明 $f(x) = x^n$。</p>
+    </div>
+
+    <p><b>一句话思路：</b>把 $f(x)$ 看成一个新变量 $y$。条件说的是：对 $f$ 能取到的每个值 $y$，都有 $f(y) = y^n$。$f$ 能取到无穷多个值，所以 $f(y) - y^n$ 有无穷多个根，只能是零多项式。</p>
+
+    <ol class="steps">
+      <li class="zero"><div class="step-body">
+        <h3>先读懂条件</h3>
+        <p>$f(f(x))$ 是把 $f(x)$ 整个代进 $f$ 里。比如 $n=2,\ f(x) = x^2$：$f(f(x)) = (x^2)^2 = x^4$，$f(x)^2 = (x^2)^2 = x^4$，相等。题目说：满足条件的只有这一个。</p>
+      </div></li>
+
+      <li><div class="step-body">
+        <h3>造一个“差”多项式</h3>
+        <p>令 $H(t) = f(t) - t^n$。我们要证的就是 $H = 0$。</p>
+        <p>把 $t = f(x)$ 代入：</p>
+        $$H\big(f(x)\big) = f\big(f(x)\big) - f(x)^n = 0\quad(\text{由题设}).$$
+      </div></li>
+
+      <li><div class="step-body">
+        <h3>$f$ 能取到无穷多个不同的值</h3>
+        <p>$f$ 的次数 $d\gt0$。对任意一个复数 $c$，方程 $f(x) = c$ 最多有 $d$ 个解。如果 $f$ 只能取到有限个值 $c_1,\dots,c_N$，那么全体复数最多只有 $Nd$ 个，这不可能（复数有无穷多个）。</p>
+      </div></li>
+
+      <li><div class="step-body">
+        <h3>$H$ 有无穷多个根</h3>
+        <p>对 $f$ 取到的每个值 $y = f(x_0)$，由第 1 步 $H(y) = H(f(x_0)) = 0$。所以这无穷多个值都是 $H$ 的根。</p>
+        <p>非零多项式的根只有有限个（不超过次数），所以 $H$ 是零多项式：$f(t) - t^n = 0$，即 $f(x) = x^n$。证毕。</p>
+      </div></li>
+    </ol>
+
+    <details>
+      <summary>原书的做法（比较次数，供对照）</summary>
+      <p>设 $\deg f = d$，首项系数 $a_d$。$f(f(x))$ 的最高次项来自 $a_d f(x)^d$，次数 $d^2$；右边次数 $dn$，所以 $d = n$。令 $H(t) = f(t)-t^n$，则 $H(f(x)) = 0$。若 $H$ 是非零常数，$H(f(x))$ 仍是该常数，矛盾；若 $\deg H = e\gt0$，则 $H(f(x))$ 的次数是 $de\gt0$，也不是 $0$，矛盾。故 $H=0$。</p>
+      <p>原书附注：若允许 $f$ 是常数 $c$，条件变成 $c = c^n$。$n=1$ 时任意 $c$ 都行；$n\gt1$ 时 $c=0$ 或 $c^{n-1}=1$。</p>
+    </details>
+
+    <div class="summary-box">
+      <h3>这题记住什么</h3>
+      <ul class="tight">
+        <li>证明两个多项式相等：证明它们在无穷多个点上取值相同即可。</li>
+        <li>复合 $H(f(x))$ 的次数 $= \deg H \times \deg f$。</li>
+      </ul>
+    </div>
+  </section>

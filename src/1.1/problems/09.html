@@ -1,0 +1,85 @@
+  <section class="example" id="ex1-9">
+    <h2>例 1.9</h2>
+
+    <div class="card problem">
+      <span class="tag">题目（原书第 4–5 页）</span>
+      <p>设</p>
+      $$f(x) = x^7+2x^6-6x^5-8x^4+19x^3+9x^2-22x+8,\qquad g(x) = x^2+x-2.$$
+      <p>将 $f(x)$ 表示成 $\sum_{i=0}^{k} c_i(x)\,g(x)^i$，其中每个非零 $c_i$ 的次数小于 $\deg g = 2$。</p>
+    </div>
+
+    <p><b>一句话思路：</b>这就是把 $f$ 写成“<b>$g$ 进制</b>”。十进制里 $1234 = 1\cdot10^3 + 2\cdot10^2+3\cdot10+4$，“数位”是反复除以 $10$ 得到的余数；这里反复除以 $g$，余数（次数 $\lt 2$）就是各个“数位” $c_i$。</p>
+
+    <ol class="steps">
+      <li class="zero"><div class="step-body">
+        <h3>先用十进制演示做法</h3>
+        <p>求 $1234$ 的各位数字：$1234 \div 10 = 123$ 余 $\mathbf{4}$；$123\div10 = 12$ 余 $\mathbf{3}$；$12\div 10 = 1$ 余 $\mathbf 2$；最后剩 $\mathbf 1$。余数从个位往上排，最后剩下的商是最高位。</p>
+        <p>多项式完全照做：每次除以 $g$，记下余数，用商继续除。</p>
+      </div></li>
+
+      <li><div class="step-body">
+        <h3>第一次除法：$f \div g$</h3>
+        <p>长除法：每次用当前多项式的首项除以 $g$ 的首项 $x^2$ 得到一个商项，再减去“商项 $\times g$”。</p>
+        <div class="scroll"><table>
+          <thead><tr><th>商项</th><th>减去 商项$\times g$ 之后剩下的</th></tr></thead>
+          <tbody>
+            <tr><td>$x^5$</td><td class="left">$x^6-4x^5-8x^4+19x^3+9x^2-22x+8$</td></tr>
+            <tr><td>$x^4$</td><td class="left">$-5x^5-6x^4+19x^3+9x^2-22x+8$</td></tr>
+            <tr><td>$-5x^3$</td><td class="left">$-x^4+9x^3+9x^2-22x+8$</td></tr>
+            <tr><td>$-x^2$</td><td class="left">$10x^3+7x^2-22x+8$</td></tr>
+            <tr><td>$10x$</td><td class="left">$-3x^2-2x+8$</td></tr>
+            <tr><td>$-3$</td><td class="left hl">$x+2$（次数 $\lt2$，停）</td></tr>
+          </tbody>
+        </table></div>
+        <p>例如第一行：$x^5\cdot g = x^7+x^6-2x^5$，从 $f$ 中减去它，$x^7$ 消失，得到表中第一行。</p>
+        <p>结果：$f = q_1 g + (x+2)$，其中 $q_1 = x^5+x^4-5x^3-x^2+10x-3$（把商项加起来）。最低“数位” $c_0 = x+2$。</p>
+      </div></li>
+
+      <li><div class="step-body">
+        <h3>第二次除法：$q_1 \div g$</h3>
+        <div class="scroll"><table>
+          <thead><tr><th>商项</th><th>减去 商项$\times g$ 之后剩下的</th></tr></thead>
+          <tbody>
+            <tr><td>$x^3$</td><td class="left">$-3x^3-x^2+10x-3$</td></tr>
+            <tr><td>$-3x$</td><td class="left">$2x^2+4x-3$</td></tr>
+            <tr><td>$2$</td><td class="left hl">$2x+1$（停）</td></tr>
+          </tbody>
+        </table></div>
+        <p>所以 $q_1 = q_2 g + (2x+1)$，$q_2 = x^3-3x+2$。第二个“数位” $c_1 = 2x+1$。</p>
+      </div></li>
+
+      <li><div class="step-body">
+        <h3>第三次除法：$q_2 \div g$</h3>
+        <p>试着分解：$(x-1)(x^2+x-2) = x^3+x^2-2x-x^2-x+2 = x^3-3x+2$。正好整除：</p>
+        $$q_2 = (x-1)\,g + 0.$$
+        <p>余数 $c_2 = 0$；商 $x-1$ 的次数已经 $\lt 2$，它就是最高“数位” $c_3 = x-1$。</p>
+      </div></li>
+
+      <li><div class="step-body">
+        <h3>一层层代回去</h3>
+        <p>从最后一式往前代：</p>
+        $$\begin{aligned}
+        q_1 &= q_2\, g + (2x+1) = (x-1)g\cdot g + (2x+1) = (x-1)g^2 + (2x+1),\\
+        f &= q_1\, g + (x+2) = \big[(x-1)g^2 + (2x+1)\big]g + (x+2).
+        \end{aligned}$$
+        <p>把方括号乘开：</p>
+        $$\boxed{\,f = (x-1)\,g^3 + 0\cdot g^2 + (2x+1)\,g + (x+2)\,}$$
+        <p>即 $c_3 = x-1,\ c_2 = 0,\ c_1 = 2x+1,\ c_0 = x+2$，每个都是次数 $\lt2$ 的多项式或 $0$。</p>
+        <div class="check"><b>展开验算</b>
+          <p>$g^3 = x^6+3x^5-3x^4-11x^3+6x^2+12x-8$，所以 $(x-1)g^3 = x^7+2x^6-6x^5-8x^4+17x^3+6x^2-20x+8$。</p>
+          <p>$(2x+1)g = 2x^3+3x^2-3x-2$。三部分相加：</p>
+          <p>$x^7+2x^6-6x^5-8x^4+(17+2)x^3+(6+3)x^2+(-20-3+1)x+(8-2+2)$，正是 $f$。✓</p>
+        </div>
+      </div></li>
+    </ol>
+
+    <p class="back">原书附注还说明这种“$g$ 进制”写法是唯一的，和整数的进制表示唯一是同一个道理。</p>
+
+    <div class="summary-box">
+      <h3>这题记住什么</h3>
+      <ul class="tight">
+        <li>“按 $g$ 的幂展开” = 反复除以 $g$，余数从低到高就是各个系数，和求十进制各位数字一样。</li>
+        <li>做完一定展开验算一次，长除法很容易抄错符号。</li>
+      </ul>
+    </div>
+  </section>

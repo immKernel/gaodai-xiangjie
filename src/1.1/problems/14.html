@@ -1,0 +1,60 @@
+  <section class="example" id="ex1-14">
+    <h2>例 1.14</h2>
+
+    <div class="card problem">
+      <span class="tag">题目（原书第 7 页）</span>
+      <p>设 $f\in K[x]$ 有正次数。刻画满足下列性质的 $f$：对于任意 $g,h\in K[x]$，若 $f\mid gh$，则 $f\mid g$，或存在正整数 $n$ 使 $f\mid h^n$。（原题要求证明这种 $f$ 恰为某个不可约多项式的幂。）</p>
+    </div>
+
+    <p><b>答案：</b>$f = c\,p^m$，其中 $c$ 是非零常数，$m\ge1$，$p$ 是首一不可约多项式。也就是说，$f$ 只含<b>一种</b>不可约因式。</p>
+
+    <p><b>一句话思路：</b>先看整数。$8 = 2^3$：若 $8\mid gh$ 但 $8\nmid g$，那么 $h$ 里至少有一个因子 $2$，于是 $8\mid h^3$。而 $12 = 2^2\cdot3$ 就不行：$12\mid 4\times3$，但 $12\nmid 4$，$3$ 的任何次方都不是偶数，$12\nmid 3^n$。<b>只含一种质因数的数</b>才有这个性质，多项式同理。</p>
+
+    <ol class="steps">
+      <li class="zero"><div class="step-body">
+        <h3>一个记号：$v_p(w)$</h3>
+        <p>把非零多项式 $w$ 分解成不可约因式的乘积，$p$ 出现的次数记作 $v_p(w)$。例如 $w = (x-1)^3(x+2)$，则 $v_{x-1}(w) = 3$，$v_{x+2}(w) = 1$。两条显然的规则：</p>
+        <ul class="tight">
+          <li>$v_p(gh) = v_p(g) + v_p(h)$（乘起来，个数相加）。</li>
+          <li>$p^m \mid w \iff v_p(w)\ge m$。</li>
+        </ul>
+      </div></li>
+
+      <li><div class="step-body">
+        <h3>证明 $f = c\,p^m$ 满足性质</h3>
+        <p>设 $f\mid gh$ 且 $f\nmid g$，要找 $n$ 使 $f\mid h^n$。（常数 $c$ 不影响整除，只看 $p^m$。）</p>
+        <ul class="tight">
+          <li>若 $h = 0$，则 $f\mid 0 = h^1$，已经成立。</li>
+          <li>下设 $h\ne0$。此时 $g\ne 0$（否则 $f\mid 0 = g$，与 $f\nmid g$ 矛盾）。</li>
+        </ul>
+        <p>由 $f\nmid g$：$v_p(g)\lt m$。由 $f\mid gh$：$v_p(g)+v_p(h) = v_p(gh)\ge m$。两式相减：</p>
+        $$v_p(h) \ge m - v_p(g) \gt 0,\quad\text{即 } v_p(h)\ge 1.$$
+        <p>于是 $v_p(h^m) = m\,v_p(h) \ge m$，所以 $p^m\mid h^m$，即 $f\mid h^m$。取 $n=m$ 即可。</p>
+      </div></li>
+
+      <li><div class="step-body">
+        <h3>证明不是这种形式的 $f$ 不满足性质</h3>
+        <p>设 $f$ 含有至少两种不同的首一不可约因式。取其中一种 $p$，记 $m = v_p(f)$，令</p>
+        $$g = p^m,\qquad h = f / p^m .$$
+        <p>（像 $12 = 4\times3$ 那样，把 $p$ 的部分和其余部分分开。）</p>
+        <ul class="tight">
+          <li>$gh = f$，所以 $f\mid gh$。</li>
+          <li>$h$ 里还有别的不可约因式，次数 $\gt0$，所以 $\deg g\lt\deg f$，$f\nmid g$。</li>
+          <li>若有 $n$ 使 $f\mid h^n$，则 $p\mid h^n = h\cdot h\cdots h$。由例 1.13（$p$ 整除乘积就整除其中某个因子），$p\mid h$。但 $h$ 里已经没有 $p$ 了（$v_p(h)=0$），矛盾。</li>
+        </ul>
+        <p>所以这样的 $f$ 不满足性质。两方面合起来，满足性质的 $f$ 恰好是 $c\,p^m$。</p>
+      </div></li>
+    </ol>
+
+    <div class="idea"><b>关于常数 $c$（原书的题意校订）</b>
+      <p>原题写的是 $f=p^m$。若 $f$ 首一，确实 $c = 1$。一般情况要保留 $c$：例如 $2x^2\in\mathbb{Q}[x]$ 满足性质，但 $2$ 不是有理数的平方，没法写成 $(ax)^2$ 这种不可约多项式的平方。</p>
+    </div>
+
+    <div class="summary-box">
+      <h3>这题记住什么</h3>
+      <ul class="tight">
+        <li>“只含一种不可约因式”$\iff$ 这个“整除或整除某次幂”的性质，和整数里“质数的幂”完全对应。</li>
+        <li>数不可约因式个数的 $v_p$ 记号，能把整除问题变成比较整数大小。</li>
+      </ul>
+    </div>
+  </section>

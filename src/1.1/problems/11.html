@@ -1,0 +1,68 @@
+  <section class="example" id="ex1-11">
+    <h2>例 1.11</h2>
+
+    <div class="card problem">
+      <span class="tag">题目（原书第 5–6 页）</span>
+      <p>设 $n\ge1$，$P_i(x)\ (0\le i\le n-1)$ 和 $P(x)$ 都是实系数多项式，并且</p>
+      $$\sum_{i=0}^{n-1} x^i P_i(x^{in}) = P(x^n),\qquad x-1 \mid P(x).$$
+      <p>证明：(1) $P_i(x) = 0$ 对 $1\le i\le n-1$ 成立；(2) $P(x) = 0$；(3) $P_0(1) = 0$。</p>
+    </div>
+
+    <p><b>一句话思路：</b>把每一项 $x$ 的指数按“除以 $n$ 的余数”分组。右边全是 $n$ 的倍数（余 $0$），左边第 $i$ 项的指数全是“余 $i$”。不同组的项不可能互相抵消，所以余 $1,\dots,n-1$ 的那些组必须全是 $0$。</p>
+
+    <ol class="steps">
+      <li><div class="step-body">
+        <h3>看清左边第 $i$ 项有哪些指数</h3>
+        <p>设 $P_i(t) = a_{i0} + a_{i1}t + a_{i2}t^2 + \cdots$。把 $t$ 换成 $x^{in}$，再乘 $x^i$：</p>
+        $$x^iP_i(x^{in}) = a_{i0}\,x^{i} + a_{i1}\,x^{i+in} + a_{i2}\,x^{i+2in} + \cdots$$
+        <p>这些指数 $i,\ i+in,\ i+2in, \dots$ 除以 $n$ 都<b>余 $i$</b>（多出来的都是 $n$ 的倍数）。当 $i\ge1$ 时，它们一个比一个大，互不相同，所以同一项内部也不会合并。</p>
+      </div></li>
+
+      <li><div class="step-body">
+        <h3>用表格看分组（以 $n=3$ 为例）</h3>
+        <p>把指数 $0$ 到 $11$ 按除以 $3$ 的余数涂色：</p>
+        <div class="scroll"><table>
+          <tr><th>指数</th><td class="r0">0</td><td class="r1">1</td><td class="r2">2</td><td class="r0">3</td><td class="r1">4</td><td class="r2">5</td><td class="r0">6</td><td class="r1">7</td><td class="r2">8</td><td class="r0">9</td><td class="r1">10</td><td class="r2">11</td></tr>
+          <tr><th>余数</th><td class="r0">0</td><td class="r1">1</td><td class="r2">2</td><td class="r0">0</td><td class="r1">1</td><td class="r2">2</td><td class="r0">0</td><td class="r1">1</td><td class="r2">2</td><td class="r0">0</td><td class="r1">1</td><td class="r2">2</td></tr>
+        </table></div>
+        <ul class="tight">
+          <li>右边 $P(x^3)$ 的指数都是 $3$ 的倍数：只在蓝色格。</li>
+          <li>左边 $x P_1(x^{3})$ 的指数 $1, 4, 7,\dots$：只在黄色格。</li>
+          <li>左边 $x^2 P_2(x^{6})$ 的指数 $2, 8, 14,\dots$：只在绿色格。</li>
+          <li>左边 $P_0(x^0) = P_0(1)$ 是常数，指数 $0$：蓝色格。</li>
+        </ul>
+      </div></li>
+
+      <li><div class="step-body">
+        <h3>证明 (1)：比较黄、绿格的系数</h3>
+        <p>两个多项式相等，就是每个 $x^k$ 的系数都相等。取 $1\le i\le n-1$，看指数 $i+ink$ 的系数：</p>
+        <ul class="tight">
+          <li>左边：只有第 $i$ 项贡献这个指数，系数是 $a_{ik}$。</li>
+          <li>右边：指数都是 $n$ 的倍数，没有这个指数，系数是 $0$。</li>
+        </ul>
+        <p>所以 $a_{ik} = 0$，对每个 $k$ 都成立。$P_i$ 的系数全为 $0$，即 $P_i = 0$（$1\le i\le n-1$）。</p>
+      </div></li>
+
+      <li><div class="step-body">
+        <h3>证明 (2)：剩下的等式</h3>
+        <p>去掉那些为 $0$ 的项，只剩 $i=0$ 那一项：</p>
+        $$P_0(1) = P(x^n).$$
+        <p>左边是常数。如果 $P$ 的次数 $d\gt0$，右边 $P(x^n)$ 的次数是 $nd\gt0$，不是常数，矛盾。所以 $P$ 是常数，记为 $P = c$。</p>
+        <p>又 $x-1\mid P$，即 $x-1 \mid c$。次数 $\ge1$ 的多项式只能整除常数 $0$，所以 $c=0$，即 $P = 0$。</p>
+      </div></li>
+
+      <li><div class="step-body">
+        <h3>证明 (3)</h3>
+        <p>由第 4 步，$P_0(1) = P(x^n) = 0$。证毕。</p>
+        <p>（$n=1$ 时 (1) 没有要证的 $i$，(2)(3) 的推理不变。）</p>
+      </div></li>
+    </ol>
+
+    <div class="summary-box">
+      <h3>这题记住什么</h3>
+      <ul class="tight">
+        <li>“按指数除以 $n$ 的余数分组”：不同组的项永远不会互相抵消，所以可以分组比较系数。</li>
+        <li>常数 $=$ 次数为正的多项式，不可能；由此逼出 $P$ 是常数。</li>
+      </ul>
+    </div>
+  </section>

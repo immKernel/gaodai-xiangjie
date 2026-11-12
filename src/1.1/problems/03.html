@@ -1,0 +1,74 @@
+  <section class="example" id="ex1-3">
+    <h2>例 1.3</h2>
+
+    <div class="card problem">
+      <span class="tag">题目（原书第 3 页）</span>
+      <p>设 $f, g, h, p \in \mathbb{R}[x]$（实系数多项式）满足</p>
+      $$\begin{aligned}
+      (x^2+1)h(x) + (x-1)f(x) + (x-1)g(x) &= 0, &\quad(1)\\
+      (x^2+1)p(x) + (x+1)f(x) + (x+2)g(x) &= 0. &\quad(2)
+      \end{aligned}$$
+      <p>证明：$x^2+1$ 整除 $f(x)$ 和 $g(x)$。</p>
+    </div>
+
+    <p><b>一句话思路：</b>把 $f, g$ 当成两个“未知数”，像解二元一次方程组那样<b>消元</b>：消掉 $g$ 就得到只含 $f$ 的式子，消掉 $f$ 就得到只含 $g$ 的式子。</p>
+
+    <ol class="steps">
+      <li><div class="step-body">
+        <h3>起个短名字，看清结构</h3>
+        <p>令 $A = x^2+1$，并省略 “$(x)$”。两个条件变成</p>
+        $$\begin{aligned}
+        A h + (x-1) f + (x-1) g &= 0, &(1)\\
+        A p + (x+1) f + (x+2) g &= 0. &(2)
+        \end{aligned}$$
+        <div class="idea"><b>为什么会想到消元？</b><p>这和中学的方程组 $\begin{cases}2a+3b=0\\ 5a+7b=0\end{cases}$ 一模一样：$f, g$ 是“未知数”，$(x-1),(x-1),(x+1),(x+2)$ 是“系数”，带 $A$ 的项暂时当成常数项。</p></div>
+      </div></li>
+
+      <li><div class="step-body">
+        <h3>消去 $g$：(1) 乘 $(x+2)$，(2) 乘 $(x-1)$，再相减</h3>
+        <p>这样两式里 $g$ 的系数都变成 $(x-1)(x+2)$，相减就没了：</p>
+        $$\begin{aligned}
+        (x+2)\times(1):&\quad (x+2)A h + (x+2)(x-1) f + (x+2)(x-1) g = 0\\
+        (x-1)\times(2):&\quad (x-1)A p + (x-1)(x+1) f + (x-1)(x+2) g = 0
+        \end{aligned}$$
+        <p>相减后，$f$ 的系数是</p>
+        $$(x+2)(x-1) - (x-1)(x+1) = (x-1)\big[(x+2)-(x+1)\big] = (x-1)\cdot 1 = x-1.$$
+        <p>所以得到</p>
+        $$A\big[(x+2)h - (x-1)p\big] + (x-1)f = 0,\qquad\text{即}\qquad (x-1)f = A\cdot\big[(x-1)p - (x+2)h\big].$$
+        <p>右边是 $A$ 乘一个多项式，所以 <b>$A \mid (x-1)f$</b>。</p>
+      </div></li>
+
+      <li><div class="step-body">
+        <h3>消去 $f$：(1) 乘 $(x+1)$，(2) 乘 $(x-1)$，再相减</h3>
+        <p>两式里 $f$ 的系数都变成 $(x-1)(x+1)$，相减消掉。$g$ 的系数是</p>
+        $$(x+1)(x-1) - (x-1)(x+2) = (x-1)\big[(x+1)-(x+2)\big] = -(x-1).$$
+        <p>所以</p>
+        $$A\big[(x+1)h - (x-1)p\big] - (x-1)g = 0,\qquad\text{即}\qquad (x-1)g = A\cdot\big[(x+1)h - (x-1)p\big].$$
+        <p>同样得到 <b>$A \mid (x-1)g$</b>。</p>
+      </div></li>
+
+      <li><div class="step-body">
+        <h3>去掉多出来的 $(x-1)$</h3>
+        <p>我们要的是 $A\mid f$，现在多了一个 $(x-1)$。关键是这个小计算：</p>
+        $$A - (x+1)(x-1) = (x^2+1) - (x^2-1) = 2.$$
+        <p>两边乘 $f$：</p>
+        $$2f = \underbrace{A\,f}_{A\text{ 的倍数}} - (x+1)\cdot\underbrace{(x-1)f}_{A\text{ 的倍数（第 2 步）}}.$$
+        <p>两个 $A$ 的倍数相减还是 $A$ 的倍数，所以 $A \mid 2f$。$2$ 是非零常数，两边除以 $2$ 不影响整除，所以 $A\mid f$。</p>
+        <p>对 $g$ 完全一样：$2g = A g - (x+1)(x-1)g$，得 $A \mid g$。证毕。</p>
+      </div></li>
+    </ol>
+
+    <div class="idea"><b>另一种看法（更快，用复数）</b>
+      <p>$A = x^2+1$ 的根是 $i$ 和 $-i$。把 $x = i$ 代入 (1)(2)，带 $A$ 的项变成 $0$：</p>
+      $$(i-1)f(i) + (i-1)g(i) = 0,\qquad (i+1)f(i) + (i+2)g(i) = 0.$$
+      <p>第一式除以 $(i-1)\ne 0$ 得 $g(i) = -f(i)$，代入第二式得 $(i+1-i-2)f(i) = -f(i)= 0$，所以 $f(i)=g(i)=0$。同理 $f(-i)=g(-i)=0$。$f$ 有根 $\pm i$，所以 $(x-i)(x+i) = x^2+1$ 整除 $f$，$g$ 也一样。</p>
+    </div>
+
+    <div class="summary-box">
+      <h3>这题记住什么</h3>
+      <ul class="tight">
+        <li>多项式方程组也能像数字方程组那样“乘系数、相减、消元”。</li>
+        <li>$A\mid (x-1)f$ 推出 $A\mid f$，靠的是 $A$ 与 $x-1$ 没有公因式。这里用“凑出一个非零常数 $2$”的办法写得很具体。</li>
+      </ul>
+    </div>
+  </section>

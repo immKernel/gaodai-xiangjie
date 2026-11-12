@@ -1,0 +1,95 @@
+  <section class="example" id="ex1-4">
+    <h2>例 1.4</h2>
+
+    <div class="card problem">
+      <span class="tag">题目（原书第 3 页）</span>
+      <p>用综合除法将 $2x^4+x^3+7x^2-8x+14$ 写成</p>
+      $$a\,x(x-1)(x-2)(x-3) + b\,x(x-1)(x-2) + c\,x(x-1) + d\,x + e,$$
+      <p>列出综合除法算式并求 $a,b,c,d,e$。</p>
+    </div>
+
+    <p><b>一句话思路：</b>依次除以 $x,\ x-1,\ x-2,\ x-3$，每次把<b>商</b>拿去做下一次的被除式。四次的余数从下往上，就是 $e, d, c, b$，最后剩下的商就是 $a$。</p>
+
+    <ol class="steps">
+      <li class="zero"><div class="step-body">
+        <h3>先学会综合除法（除以 $x-c$ 的快速算法）</h3>
+        <p>以 $(2x^2+3x+10)\div(x-2)$ 为例。把系数 $2,3,10$ 排成一行，左边写 $c=2$：</p>
+        <div class="scroll"><table class="synth">
+          <tr><td class="root">2</td><td>2</td><td>3</td><td>10</td></tr>
+          <tr><td class="root"></td><td></td><td>4</td><td>14</td></tr>
+          <tr class="out"><td class="root"></td><td>2</td><td>7</td><td class="rem">24</td></tr>
+        </table></div>
+        <p>规则只有三条：</p>
+        <ul class="tight">
+          <li>第一个系数 $2$ 直接<b>落下来</b>。</li>
+          <li>落下来的数乘 $c$，写到<b>下一列</b>：$2\times 2 = 4$；这一列相加：$3+4 = 7$。</li>
+          <li>重复：$7\times 2 = 14$，$10+14 = 24$。</li>
+        </ul>
+        <p>最后一个数 $24$ 是<b>余数</b>，前面的 $2, 7$ 是<b>商</b>的系数，即商 $=2x+7$。也就是 $2x^2+3x+10 = (x-2)(2x+7) + 24$。展开右边：$2x^2+7x-4x-14+24 = 2x^2+3x+10$，对。</p>
+      </div></li>
+
+      <li><div class="step-body">
+        <h3>为什么要“连续除”？看题目式子的结构</h3>
+        <p>题目要的式子，每一项都比后一项多乘一个因子，可以一层层提公因式，像套娃：</p>
+        $$\begin{aligned}
+        &= x\Big[\,a(x-1)(x-2)(x-3) + b(x-1)(x-2) + c(x-1) + d\,\Big] + e\\
+        &= x\Big[(x-1)\big[\,a(x-2)(x-3) + b(x-2) + c\,\big] + d\Big] + e\\
+        &= x\Big[(x-1)\big[(x-2)\big(a(x-3) + b\big) + c\big] + d\Big] + e.
+        \end{aligned}$$
+        <p>所以：原式除以 $x$ 的余数是 $e$；商再除以 $x-1$，余数是 $d$；商再除以 $x-2$，余数是 $c$；商再除以 $x-3$，余数是 $b$，商是 $a$。</p>
+      </div></li>
+
+      <li><div class="step-body">
+        <h3>四次综合除法</h3>
+        <p>系数是 $2,\ 1,\ 7,\ -8,\ 14$（注意 $-8x$ 的负号）。每一段用上一段的商（绿色左边的那些数）继续除：</p>
+        <div class="scroll"><table class="synth">
+          <tr><td class="root">0</td><td>2</td><td>1</td><td>7</td><td>−8</td><td>14</td></tr>
+          <tr><td class="root"></td><td></td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+          <tr class="out"><td class="root"></td><td>2</td><td>1</td><td>7</td><td>−8</td><td class="rem">14 = e</td></tr>
+          <tr><td class="blank" colspan="6"></td></tr>
+          <tr><td class="root">1</td><td>2</td><td>1</td><td>7</td><td>−8</td><td class="blank"></td></tr>
+          <tr><td class="root"></td><td></td><td>2</td><td>3</td><td>10</td><td class="blank"></td></tr>
+          <tr class="out"><td class="root"></td><td>2</td><td>3</td><td>10</td><td class="rem">2 = d</td><td class="blank"></td></tr>
+          <tr><td class="blank" colspan="6"></td></tr>
+          <tr><td class="root">2</td><td>2</td><td>3</td><td>10</td><td class="blank"></td><td class="blank"></td></tr>
+          <tr><td class="root"></td><td></td><td>4</td><td>14</td><td class="blank"></td><td class="blank"></td></tr>
+          <tr class="out"><td class="root"></td><td>2</td><td>7</td><td class="rem">24 = c</td><td class="blank"></td><td class="blank"></td></tr>
+          <tr><td class="blank" colspan="6"></td></tr>
+          <tr><td class="root">3</td><td>2</td><td>7</td><td class="blank"></td><td class="blank"></td><td class="blank"></td></tr>
+          <tr><td class="root"></td><td></td><td>6</td><td class="blank"></td><td class="blank"></td><td class="blank"></td></tr>
+          <tr class="out"><td class="root"></td><td>2 = a</td><td class="rem">13 = b</td><td class="blank"></td><td class="blank"></td><td class="blank"></td></tr>
+        </table></div>
+        <p>逐段说明：</p>
+        <ul class="tight">
+          <li>除以 $x$（$c=0$）：乘 $0$ 全是 $0$，商 $2x^3+x^2+7x-8$，余数 $14$。</li>
+          <li>除以 $x-1$：$1+2=3$，$7+3=10$，$-8+10=2$。商 $2x^2+3x+10$，余数 $2$。</li>
+          <li>除以 $x-2$：就是第 0 步的例子，商 $2x+7$，余数 $24$。</li>
+          <li>除以 $x-3$：$7+2\times3 = 13$。商 $2$，余数 $13$。</li>
+        </ul>
+      </div></li>
+
+      <li><div class="step-body">
+        <h3>写出答案</h3>
+        $$(a,b,c,d,e) = (2,\ 13,\ 24,\ 2,\ 14),$$
+        $$2x^4+x^3+7x^2-8x+14 = 2x(x-1)(x-2)(x-3) + 13x(x-1)(x-2) + 24x(x-1) + 2x + 14.$$
+        <div class="check"><b>代数字验算（不用展开）</b>
+          <p>右边代入 $x=0,1,2,3$ 时很多项变成 $0$，非常好算。原式记作 $P(x)$：</p>
+          <ul class="tight">
+            <li>$x=0$：右边 $= e = 14$；$P(0) = 14$。✓</li>
+            <li>$x=1$：右边 $= d+e = 16$；$P(1) = 2+1+7-8+14 = 16$。✓</li>
+            <li>$x=2$：右边 $= 2c + 2d + e = 48+4+14 = 66$；$P(2) = 32+8+28-16+14 = 66$。✓</li>
+            <li>$x=3$：右边 $= 6b+6c+3d+e = 78+144+6+14 = 242$；$P(3) = 162+27+63-24+14 = 242$。✓</li>
+          </ul>
+          <p>这个验算本身也是一种解法：依次代 $x=0,1,2,3$ 就能一个个解出 $e,d,c,b$。</p>
+        </div>
+      </div></li>
+    </ol>
+
+    <div class="summary-box">
+      <h3>这题记住什么</h3>
+      <ul class="tight">
+        <li>综合除法三步：落下、乘 $c$、加到下一列。最后一个数是余数。</li>
+        <li>“套娃”形式的展开 = 连续做带余除法，余数从里到外依次是各个系数。</li>
+      </ul>
+    </div>
+  </section>

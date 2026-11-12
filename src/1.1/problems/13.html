@@ -1,0 +1,46 @@
+  <section class="example" id="ex1-13">
+    <h2>例 1.13</h2>
+
+    <div class="card problem">
+      <span class="tag">题目（原书第 7 页）</span>
+      <p>设 $F$ 为域，$f\in F[x]$ 且 $\deg f\gt0$。证明：$f$ 不可约，当且仅当对任意 $g,h\in F[x]$，$f\mid gh$ 蕴含 $f\mid g$ 或 $f\mid h$。</p>
+    </div>
+
+    <p><b>一句话思路：</b>不可约多项式就是多项式里的“质数”。整数里有：质数 $p$ 整除 $ab$，则 $p\mid a$ 或 $p\mid b$；合数不行（$6\mid 2\times3$，但 $6\nmid2$，$6\nmid3$）。这题就是把这件事搬到多项式上。</p>
+
+    <ol class="steps">
+      <li class="zero"><div class="step-body">
+        <h3>先弄清“不可约”</h3>
+        <p>$f$ 不可约：$f$ 不能写成两个<b>次数都比 $f$ 低</b>的多项式相乘。等价地说，$f$ 的因式只有两种：非零常数，以及 $c\cdot f$（$c$ 是非零常数）。</p>
+        <p>例：在实数上 $x^2+1$ 不可约；$x^2 - 1 = (x-1)(x+1)$ 可约。</p>
+      </div></li>
+
+      <li><div class="step-body">
+        <h3>“$\Rightarrow$”：设 $f$ 不可约，$f\mid gh$，且 $f\nmid g$，要证 $f\mid h$</h3>
+        <p><b>(a) $f$ 与 $g$ 的最大公因式是 $1$。</b>最大公因式 $D$ 是 $f$ 的因式，按第 0 步只有两种可能：常数，或 $c\cdot f$。如果是 $c\cdot f$，那么 $f\mid g$，与假设矛盾。所以 $D$ 是常数，首一化后 $D=1$。</p>
+        <p><b>(b) 用 Bézout 等式。</b>$\gcd(f,g)=1$，所以存在多项式 $u,v$ 使</p>
+        $$u f + v g = 1.$$
+        <p><b>(c) 两边乘 $h$：</b></p>
+        $$h = (uh)\,f + v\,(gh).$$
+        <p>第一项是 $f$ 的倍数；第二项里 $gh$ 是 $f$ 的倍数（已知 $f\mid gh$）。两个倍数相加还是倍数，所以 $f\mid h$。</p>
+      </div></li>
+
+      <li><div class="step-body">
+        <h3>“$\Leftarrow$”：设性质成立，用反证法证 $f$ 不可约</h3>
+        <p>假设 $f$ 可约：$f = ab$，$a, b$ 的次数都大于 $0$。因为 $\deg a + \deg b = \deg f$，所以 $\deg a\lt\deg f$，$\deg b\lt\deg f$。</p>
+        <ul class="tight">
+          <li>$f\mid ab$ 显然成立（$ab = f\cdot 1$）。</li>
+          <li>但 $f\nmid a$：$f$ 的非零倍数次数至少是 $\deg f$，而 $a$ 非零且次数更小。同理 $f\nmid b$。</li>
+        </ul>
+        <p>取 $g=a,\ h=b$，性质就不成立了，矛盾。所以 $f$ 不可约。证毕。</p>
+      </div></li>
+    </ol>
+
+    <div class="summary-box">
+      <h3>这题记住什么</h3>
+      <ul class="tight">
+        <li>不可约多项式 $\approx$ 质数。“$p\mid gh \Rightarrow p\mid g$ 或 $p\mid h$”是它最常用的性质。</li>
+        <li>证明套路：$\gcd=1$ $\Rightarrow$ $uf+vg=1$ $\Rightarrow$ 两边乘 $h$。这个套路后面会反复出现。</li>
+      </ul>
+    </div>
+  </section>

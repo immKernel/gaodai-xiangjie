@@ -1,0 +1,130 @@
+  <section class="example" id="ex1-1">
+    <h2>例 1.1</h2>
+
+    <div class="card problem">
+      <span class="tag">题目（原书第 2 页）</span>
+      <p>设 $k, n$ 为正整数，令</p>
+      $$f(x) = (x+1)^{k+n} + 2x(x+1)^{k+n-1} + \cdots + (2x)^k (x+1)^n .$$
+      <p>证明：$x^{k+1} \mid (x-1)f(x) + (x+1)^{k+n+1}$。</p>
+    </div>
+
+    <p><b>一句话思路：</b>把 $(x-1)f(x) + (x+1)^{k+n+1}$ 实实在在算出来，会发现它等于 $x^{k+1}\times$ 某个多项式。难点只在于 $f(x)$ 是一长串“$\cdots$”，需要一个公式把它收拢。</p>
+
+    <ol class="steps">
+      <li class="zero"><div class="step-body">
+        <h3>先拿小数字试一试，看看结论长什么样</h3>
+        <p>取最小的 $k=1,\ n=1$。此时 $f(x)$ 只有两项（$2x$ 的次数从 $0$ 到 $k=1$）：</p>
+        $$f(x) = (x+1)^2 + 2x(x+1) = (x+1)(x+1+2x) = (x+1)(3x+1) = 3x^2+4x+1.$$
+        <p>要检查的式子是：</p>
+        $$\begin{aligned}
+        (x-1)f(x) &= (x-1)(3x^2+4x+1) = 3x^3 + x^2 - 3x - 1,\\
+        (x+1)^{3} &= x^3+3x^2+3x+1,\\
+        \text{两者相加} &= 4x^3 + 4x^2 = x^2\cdot 4(x+1).
+        \end{aligned}$$
+        <div class="check"><b>验算结果</b><p>结果确实是 $x^2 = x^{k+1}$ 乘一个多项式，结论成立。而且中间的 $x$ 项、常数项都<b>恰好抵消</b>了，说明背后有个“抵消公式”。下面找出它。</p></div>
+      </div></li>
+
+      <li><div class="step-body">
+        <h3>看清 $f(x)$ 每一项的规律</h3>
+        <p>把 $f(x)$ 的各项排成表格，只看两个括号各自的次数：</p>
+        <div class="scroll">
+          <table>
+            <thead><tr><th>第几项</th><th>$(2x)$ 的次数</th><th>$(x+1)$ 的次数</th><th>两个次数之和</th></tr></thead>
+            <tbody>
+              <tr><td>第 0 项</td><td>$0$</td><td>$k+n$</td><td>$k+n$</td></tr>
+              <tr><td>第 1 项</td><td>$1$</td><td>$k+n-1$</td><td>$k+n$</td></tr>
+              <tr><td>第 2 项</td><td>$2$</td><td>$k+n-2$</td><td>$k+n$</td></tr>
+              <tr><td>$\vdots$</td><td>$\vdots$</td><td>$\vdots$</td><td>$\vdots$</td></tr>
+              <tr><td>第 $k$ 项（最后）</td><td>$k$</td><td class="hl">$n$（最小）</td><td>$k+n$</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>规律：$(2x)$ 的次数一个一个<b>加 1</b>，$(x+1)$ 的次数一个一个<b>减 1</b>，最少也有 $n$ 次。</p>
+      </div></li>
+
+      <li><div class="step-body">
+        <h3>把每项都有的 $(x+1)^n$ 提出来</h3>
+        <p>既然每一项至少含 $n$ 个 $(x+1)$，就像提公因数一样把 $(x+1)^n$ 提到外面：</p>
+        $$f(x) = (x+1)^n\Big[\,(x+1)^{k} + (2x)(x+1)^{k-1} + (2x)^2(x+1)^{k-2} + \cdots + (2x)^k\,\Big].$$
+        <p>检查一下：括号里第 $j$ 项是 $(2x)^j(x+1)^{k-j}$，乘上外面的 $(x+1)^n$ 正好变回原来的 $(2x)^j(x+1)^{k+n-j}$。</p>
+      </div></li>
+
+      <li><div class="step-body">
+        <h3>给两个括号起短名字，认出熟悉的公式</h3>
+        <p>令 $A = x+1,\ B = 2x$。方括号里就变成</p>
+        $$A^k + A^{k-1}B + A^{k-2}B^2 + \cdots + B^k .$$
+        <p>这个样子你其实见过。中学的公式：</p>
+        $$a^2-b^2 = (a-b)(a+b),\qquad a^3-b^3=(a-b)(a^2+ab+b^2).$$
+        <p>第二个公式右边的括号 $a^2+ab+b^2$，正是“$a$ 的次数递减、$b$ 的次数递增”。一般地有：</p>
+        $$\boxed{\,A^{k+1}-B^{k+1} = (A-B)\big(A^k + A^{k-1}B + \cdots + B^k\big)\,}$$
+        <div class="idea"><b>为什么会想到这个公式？</b><p>只要看到一串“一个字母次数往下降、另一个往上升”的和，就该想到它。它其实就是等比数列求和公式，相邻两项的比都是 $B/A$。</p></div>
+      </div></li>
+
+      <li><div class="step-body">
+        <h3>用图看懂这个公式为什么对（以 $k=2$ 为例）</h3>
+        <p>计算 $(A-B)(A^2+AB+B^2)$：先用 $A$ 去乘括号得到第一行，再用 $-B$ 去乘括号得到第二行。把同类项上下对齐：</p>
+        <figure>
+          <div class="scroll">
+            <div class="cancel-grid" role="img" aria-label="A 乘以括号得 A³、A²B、AB²；负 B 乘以括号得负 A²B、负 AB²、负 B³；中间两列上下抵消，只剩 A³ 和 负 B³">
+              <div class="lab">$A\times(\cdots)$</div>
+              <div class="cell keep">$A^3$</div><div class="cell x">$+A^2B$</div><div class="cell x">$+AB^2$</div><div class="cell empty"></div>
+              <div class="lab">$-B\times(\cdots)$</div>
+              <div class="cell empty"></div><div class="cell x">$-A^2B$</div><div class="cell x">$-AB^2$</div><div class="cell keep">$-B^3$</div>
+              <div class="sum">相加：中间全部一正一负抵消，只剩 $A^3 - B^3$</div>
+            </div>
+          </div>
+          <figcaption>红线划掉的是上下抵消的项，绿框是留下来的头和尾。$k$ 更大时也一样：第一行比第二行“错开一格”，中间全消，只剩 $A^{k+1}$ 和 $-B^{k+1}$。</figcaption>
+        </figure>
+      </div></li>
+
+      <li><div class="step-body">
+        <h3>把 $A = x+1,\ B = 2x$ 代回公式</h3>
+        <p>先算 $A - B$：</p>
+        $$A - B = (x+1) - 2x = 1 - x.$$
+        <p>于是公式变成</p>
+        $$(1-x)\Big[(x+1)^{k} + (2x)(x+1)^{k-1} + \cdots + (2x)^k\Big] = (x+1)^{k+1} - (2x)^{k+1}.$$
+        <p>左边的方括号正是第 2 步里 $f(x)$ 的方括号。</p>
+      </div></li>
+
+      <li><div class="step-body">
+        <h3>两边同乘 $(x+1)^n$，左边就凑出了 $f(x)$</h3>
+        <p>由第 2 步，$f(x) = (x+1)^n\times[\text{方括号}]$，所以左边乘 $(x+1)^n$ 后变成 $(1-x)f(x)$：</p>
+        $$\begin{aligned}
+        (1-x)f(x) &= (x+1)^n\Big[(x+1)^{k+1} - (2x)^{k+1}\Big]\\
+        &= (x+1)^{k+n+1} - 2^{k+1}x^{k+1}(x+1)^n .
+        \end{aligned}$$
+        <p>第二行用了两个小事实：$(x+1)^n(x+1)^{k+1} = (x+1)^{k+n+1}$（同底数幂相乘，指数相加）；$(2x)^{k+1} = 2^{k+1}x^{k+1}$。</p>
+      </div></li>
+
+      <li><div class="step-body">
+        <h3>调整成题目要的样子</h3>
+        <p>题目里是 $(x-1)f(x)$，我们手里是 $(1-x)f(x)$。二者只差一个负号：$x-1 = -(1-x)$。把上式两边都乘 $-1$：</p>
+        $$(x-1)f(x) = -(x+1)^{k+n+1} + 2^{k+1}x^{k+1}(x+1)^n .$$
+        <p>两边再同时加上 $(x+1)^{k+n+1}$，右边的 $-(x+1)^{k+n+1}$ 就被消掉：</p>
+        $$(x-1)f(x) + (x+1)^{k+n+1} = 2^{k+1}x^{k+1}(x+1)^n .$$
+      </div></li>
+
+      <li><div class="step-body">
+        <h3>得出结论</h3>
+        <p>右边可以写成</p>
+        $$x^{k+1}\cdot\underbrace{2^{k+1}(x+1)^n}_{Q(x)} .$$
+        <p>$Q(x) = 2^{k+1}(x+1)^n$ 是一个多项式，所以按“整除”的定义，$x^{k+1} \mid (x-1)f(x) + (x+1)^{k+n+1}$。证毕。</p>
+        <div class="check"><b>和第 0 步对一下</b><p>$k=n=1$ 时，公式给出 $2^{2}x^{2}(x+1) = 4x^2(x+1)$，与第 0 步硬算的结果完全一样。</p></div>
+      </div></li>
+    </ol>
+
+    <details>
+      <summary>对照：原书的解析（很短，对比一下哪里被跳过了）</summary>
+      <p>提出每项公有的因式 $(x+1)^n$，得到 $f(x)=(x+1)^n\sum_{j=0}^{k}(2x)^j(x+1)^{k-j}$。对任意 $A,B$，把 $A-B$ 乘到 $\sum_{j=0}^k A^{k-j}B^j$ 上，得到 $A^{k+1}-B^{k+1}$。取 $A=x+1,B=2x$，则 $A-B=1-x$。代入并移项，$(x-1)f(x)+(x+1)^{k+n+1}=2^{k+1}x^{k+1}(x+1)^n$。右端含因式 $x^{k+1}$，所证即得。</p>
+    </details>
+
+    <div class="summary-box">
+      <h3>这题记住什么</h3>
+      <ul class="tight">
+        <li>看到“一个次数降、一个次数升”的一串和，就用 $A^{k+1}-B^{k+1}=(A-B)(\cdots)$ 把它收拢。</li>
+        <li>证明整除，就是把式子算成“除式 × 多项式”。</li>
+        <li>拿 $k=n=1$ 这样的小数字先试，既能找方向，也能验算答案。</li>
+      </ul>
+    </div>
+  </section>
+

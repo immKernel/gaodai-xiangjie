@@ -1,0 +1,69 @@
+  <section class="example" id="ex1-7">
+    <h2>例 1.7</h2>
+
+    <div class="card problem">
+      <span class="tag">题目（原书第 4 页）</span>
+      <p>设 $m, n, d$ 是正整数。证明：</p>
+      $$\gcd(x^m-1,\ x^n-1) = x^d - 1 \iff \gcd(m,n) = d.$$
+    </div>
+
+    <p><b>一句话思路：</b>求两个整数的最大公因数，可以用“大数减小数”（更相减损术）：$\gcd(12,8)=\gcd(8,4)=\gcd(4,4)=4$。对 $x^m-1$ 和 $x^n-1$ 做同样的事，指数也跟着做“大减小”。所以两边每一步都对得上，最后得到 $\gcd(x^m-1,x^n-1) = x^{\gcd(m,n)}-1$。</p>
+
+    <ol class="steps">
+      <li class="zero"><div class="step-body">
+        <h3>先回忆：$\gcd$ 是什么</h3>
+        <p>$\gcd(F,G)$（最大公因式）是 $F,G$ 的公因式里次数最高、首项系数为 $1$ 的那个。一个基本性质：</p>
+        $$\gcd(F, G) = \gcd(G,\ F - Q\cdot G)\qquad(Q\text{ 是任意多项式}).$$
+        <p>理由：$F$ 和 $G$ 的公因式，一定整除 $F-QG$；反过来，$G$ 和 $F-QG$ 的公因式，一定整除 $F = (F-QG)+QG$。两组公因式完全相同，最大的那个当然也相同。</p>
+      </div></li>
+
+      <li><div class="step-body">
+        <h3>关键的一步“大减小”</h3>
+        <p>设 $m \gt n$。仿照例 1.6 的拆法：</p>
+        $$x^m - 1 = x^{m-n}(x^n - 1) + (x^{m-n} - 1).$$
+        <p>（展开右边：$x^m - x^{m-n} + x^{m-n} - 1$，对。）取 $Q = x^{m-n}$，由第 0 步：</p>
+        $$\gcd(x^m-1,\ x^n-1) = \gcd(x^n-1,\ x^{m-n}-1).$$
+        <p>左右两边的指数对 $(m,n)$ 变成了 $(n, m-n)$，这和整数的 $\gcd(m,n) = \gcd(n, m-n)$ <b>一模一样</b>。</p>
+      </div></li>
+
+      <li><div class="step-body">
+        <h3>一直减下去，看一个具体例子</h3>
+        <p>$m=12,\ n=8$，左右两列同步进行：</p>
+        <div class="scroll"><table>
+          <thead><tr><th>多项式那边</th><th>整数那边</th></tr></thead>
+          <tbody>
+            <tr><td>$\gcd(x^{12}-1,\ x^{8}-1)$</td><td>$\gcd(12, 8)$</td></tr>
+            <tr><td>$=\gcd(x^{8}-1,\ x^{4}-1)$</td><td>$=\gcd(8, 4)$</td></tr>
+            <tr><td>$=\gcd(x^{4}-1,\ x^{4}-1)$</td><td>$=\gcd(4, 4)$</td></tr>
+            <tr><td class="hl">$= x^4 - 1$</td><td class="hl">$= 4$</td></tr>
+          </tbody>
+        </table></div>
+        <p>每减一次，两个指数中较大的那个变小，所以总会停在两个指数相等的时候，此时整数那边等于 $\gcd(m,n)$，多项式那边是 $\gcd(x^{e}-1, x^{e}-1) = x^e - 1$，其中 $e = \gcd(m,n)$。（$x^e-1$ 首项系数是 $1$，正好符合 $\gcd$ 的要求。）</p>
+        <p>结论：<b>$\gcd(x^m-1,\ x^n-1) = x^{\gcd(m,n)} - 1$</b>。</p>
+      </div></li>
+
+      <li><div class="step-body">
+        <h3>回到题目的“当且仅当”</h3>
+        <p>记 $e=\gcd(m,n)$，第 2 步已经说明 $\gcd(x^m-1,x^n-1) = x^e-1$。</p>
+        <ul class="tight">
+          <li>若 $\gcd(m,n)=d$，即 $e=d$，则最大公因式 $= x^d-1$。</li>
+          <li>若最大公因式 $= x^d-1$，则 $x^d-1 = x^e-1$，比较次数得 $d = e = \gcd(m,n)$。</li>
+        </ul>
+        <p>证毕。</p>
+      </div></li>
+    </ol>
+
+    <details>
+      <summary>原书的做法（用 Bézout 等式，供对照）</summary>
+      <p>记 $e=\gcd(m,n)$，$H=\gcd(x^m-1,x^n-1)$。由例 1.6，$x^e-1$ 同时整除两者，所以 $x^e-1\mid H$。取整数 $u\gt0, v\lt0$ 使 $um+vn=e$，令 $b=-vn\gt0$，则 $um = e+b$。由例 1.6，$H\mid x^{um}-1$ 且 $H\mid x^b-1$，相减得 $H\mid x^b(x^e-1)$。因为 $x^m-1$ 在 $x=0$ 处等于 $-1\ne0$，所以 $x\nmid H$，$H$ 与 $x^b$ 互素，于是 $H\mid x^e-1$。两者都首一且互相整除，故 $H = x^e-1$。</p>
+      <p>两种做法结论相同。上面的“大减小”做法就是把辗转相除法写成了减法，更容易看懂。</p>
+    </details>
+
+    <div class="summary-box">
+      <h3>这题记住什么</h3>
+      <ul class="tight">
+        <li>$\gcd(x^m-1,\ x^n-1) = x^{\gcd(m,n)}-1$，这是常考结论，直接记住。</li>
+        <li>$\gcd(F,G)=\gcd(G, F-QG)$ 是辗转相除法的核心，整数和多项式都适用。</li>
+      </ul>
+    </div>
+  </section>

@@ -1,0 +1,77 @@
+  <section class="example" id="ex1-6">
+    <h2>例 1.6</h2>
+
+    <div class="card problem">
+      <span class="tag">题目（原书第 4 页）</span>
+      <p>设 $d, n$ 为正整数。证明：$x^d - 1 \mid x^n - 1$ 当且仅当 $d \mid n$。</p>
+    </div>
+
+    <p><b>一句话思路：</b>把指数 $n$ 用 $d$ 去除：$n = qd + r$。那么 $x^n-1$ 除以 $x^d-1$ 的余数恰好是 $x^r - 1$。余数为 $0$ 当且仅当 $r=0$，也就是 $d\mid n$。</p>
+
+    <ol class="steps">
+      <li class="zero"><div class="step-body">
+        <h3>先看两个例子</h3>
+        <p>$d=2,\ n=6$（$2\mid 6$）：$x^6 - 1 = (x^2-1)(x^4+x^2+1)$，能整除。</p>
+        <p>$d=2,\ n=5$（$2\nmid 5$）：$x^5-1 = (x^2-1)(x^3+x) + (x-1)$，余数 $x-1\ne0$，不能整除。注意余数 $x-1 = x^1-1$，而 $5 = 2\times2+1$，余数里的 $1$ 正好是 $5$ 除以 $2$ 的余数。</p>
+      </div></li>
+
+      <li><div class="step-body">
+        <h3>对指数做整数的带余除法</h3>
+        <p>写 $n = qd + r$，其中 $q\ge 0$，$0 \le r \lt d$（就是小学的“$n$ 除以 $d$，商 $q$ 余 $r$”）。</p>
+      </div></li>
+
+      <li><div class="step-body">
+        <h3>把 $x^n-1$ 拆成两块</h3>
+        <p>先减一个 $x^r$ 再加回来：</p>
+        $$x^n - 1 = x^{r}\cdot x^{qd} - x^r + x^r - 1 = x^r\big[(x^d)^q - 1\big] + \big(x^r - 1\big).$$
+      </div></li>
+
+      <li><div class="step-body">
+        <h3>第一块是 $x^d-1$ 的倍数</h3>
+        <p>$q\ge1$ 时，用例 1.1 的公式（$A=x^d,\ B=1$）：$(x^d)^q - 1 = (x^d-1)\big[(x^d)^{q-1}+\cdots+1\big]$。$q=0$ 时方括号是 $1-1=0$，也是倍数。</p>
+      </div></li>
+
+      <li><div class="step-body">
+        <h3>第二块 $x^r-1$ 就是余数</h3>
+        <p>余数要求次数比除式 $x^d-1$ 的次数 $d$ 小。$x^r-1$ 的次数是 $r\lt d$（$r=0$ 时它就是 $0$）。所以第 3 步正好是带余除法的形式：</p>
+        $$x^n - 1 = (x^d-1)\cdot Q(x) + \underbrace{(x^r-1)}_{\text{余数}}.$$
+      </div></li>
+
+      <li><div class="step-body">
+        <h3>得出“当且仅当”</h3>
+        <p>能整除 $\iff$ 余数为 $0$ $\iff$ $x^r - 1 = 0$ $\iff$ $r = 0$ $\iff$ $d\mid n$。</p>
+        <p>（$r\ge1$ 时 $x^r-1$ 不是零多项式，所以 $x^r-1=0$ 只能是 $r=0$。）证毕。</p>
+      </div></li>
+    </ol>
+
+    <div class="card">
+      <h3>用图理解：根都在圆上</h3>
+      <p>$x^n-1$ 的根是 $n$ 个点，均匀分布在单位圆上，从 $1$ 开始。整除 $\iff$ $x^d-1$ 的 $d$ 个根都是 $x^n-1$ 的根（这些根都不重复）。</p>
+      <figure>
+        <div class="scroll">
+          <svg viewBox="0 0 440 210" width="100%" style="max-width:440px;min-width:380px" role="img" aria-label="左图：6等分点包含了3等分点；右图：5等分点不包含2等分点中的负1">
+            <circle cx="105" cy="100" r="70" class="sv-faint" stroke-width="1.5"/>
+            <circle cx="175" cy="100" r="6" class="sv-dot"/><circle cx="140" cy="39.4" r="6" class="sv-dot"/><circle cx="70" cy="39.4" r="6" class="sv-dot"/>
+            <circle cx="35" cy="100" r="6" class="sv-dot"/><circle cx="70" cy="160.6" r="6" class="sv-dot"/><circle cx="140" cy="160.6" r="6" class="sv-dot"/>
+            <circle cx="175" cy="100" r="11" class="sv-idea" stroke-width="2"/><circle cx="70" cy="39.4" r="11" class="sv-idea" stroke-width="2"/><circle cx="70" cy="160.6" r="11" class="sv-idea" stroke-width="2"/>
+            <text x="105" y="195" text-anchor="middle" class="sv-txt">n=6，d=3：3 个根全在里面 ✓</text>
+            <circle cx="330" cy="100" r="70" class="sv-faint" stroke-width="1.5"/>
+            <circle cx="400" cy="100" r="6" class="sv-dot"/><circle cx="351.6" cy="33.4" r="6" class="sv-dot"/><circle cx="273.4" cy="58.9" r="6" class="sv-dot"/>
+            <circle cx="273.4" cy="141.1" r="6" class="sv-dot"/><circle cx="351.6" cy="166.6" r="6" class="sv-dot"/>
+            <circle cx="400" cy="100" r="11" class="sv-idea" stroke-width="2"/><circle cx="260" cy="100" r="11" class="sv-idea" stroke-width="2" stroke-dasharray="3 3"/>
+            <text x="252" y="104" text-anchor="end" class="sv-idea-txt">−1</text>
+            <text x="330" y="195" text-anchor="middle" class="sv-txt">n=5，d=2：根 −1 不在里面 ✗</text>
+          </svg>
+        </div>
+        <figcaption>实心点：$x^n-1$ 的根；黄圈：$x^d-1$ 的根。圆被 $n$ 等分时，$d$ 等分点全落在上面，当且仅当 $d$ 能整除 $n$。</figcaption>
+      </figure>
+    </div>
+
+    <div class="summary-box">
+      <h3>这题记住什么</h3>
+      <ul class="tight">
+        <li>$x^n - 1$ 除以 $x^d-1$ 的余数是 $x^r-1$，$r$ 是 $n$ 除以 $d$ 的余数：指数的除法“搬”到了多项式上。</li>
+        <li>拆式子的常用技巧：减一项再加回来。</li>
+      </ul>
+    </div>
+  </section>

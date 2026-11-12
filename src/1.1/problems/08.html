@@ -1,0 +1,59 @@
+  <section class="example" id="ex1-8">
+    <h2>例 1.8</h2>
+
+    <div class="card problem">
+      <span class="tag">题目（原书第 4 页）</span>
+      <p>设 $m, n \gt 1$ 为整数，令</p>
+      $$f(x) = x^{m-1}+\cdots+x+1,\qquad g(x) = x^{n-1}+\cdots+x+1.$$
+      <p>证明：$\gcd(f,g) = 1$ 当且仅当 $\gcd(m,n)=1$。</p>
+    </div>
+
+    <p><b>一句话思路：</b>$f, g$ 各乘一个 $(x-1)$ 就变成 $x^m-1$ 和 $x^n-1$，它们的最大公因式由例 1.7 已知是 $x^{e}-1$。再除回 $(x-1)$，就得到 $\gcd(f,g) = 1+x+\cdots+x^{e-1}$，其中 $e=\gcd(m,n)$。</p>
+
+    <ol class="steps">
+      <li class="zero"><div class="step-body">
+        <h3>先看例子</h3>
+        <p>$m=4,\ n=6$，$\gcd(4,6)=2$：</p>
+        $$f = 1+x+x^2+x^3 = (1+x)(1+x^2),\qquad g = 1+x+\cdots+x^5 = (1+x)(1+x+x^2)(1-x+x^2).$$
+        <p>公因式是 $1+x$，不是 $1$。而 $1+x = 1+x+\cdots+x^{e-1}$（$e=2$），和思路说的一致。</p>
+      </div></li>
+
+      <li><div class="step-body">
+        <h3>乘上 $(x-1)$</h3>
+        <p>由例 1.1 的公式：</p>
+        $$(x-1)f = x^m - 1,\qquad (x-1)g = x^n-1.$$
+        <p>记 $D=\gcd(f,g)$，$e=\gcd(m,n)$。由例 1.7，$\gcd(x^m-1,\ x^n-1) = x^e-1$。</p>
+      </div></li>
+
+      <li><div class="step-body">
+        <h3>说明 $\gcd\big((x-1)f,\ (x-1)g\big) = (x-1)D$</h3>
+        <p>直觉：两个数同时乘 $2$，最大公因数也乘 $2$（$\gcd(6,10) = 2\gcd(3,5)$）。严格地分两半：</p>
+        <ul class="tight">
+          <li><b>$(x-1)D$ 是公因式：</b>$D\mid f$，所以 $(x-1)D \mid (x-1)f$；同理整除 $(x-1)g$。</li>
+          <li><b>它是“最大”的：</b>存在多项式 $u,v$ 使 $uf+vg = D$（最大公因式的基本性质）。两边乘 $(x-1)$：
+            $$u\cdot(x-1)f + v\cdot(x-1)g = (x-1)D.$$
+            所以 $(x-1)f$ 和 $(x-1)g$ 的任何公因式都整除左边，也就整除 $(x-1)D$。</li>
+        </ul>
+        <p>“是公因式，并且其他公因式都整除它”，再加上首项系数为 $1$，它就是最大公因式。</p>
+      </div></li>
+
+      <li><div class="step-body">
+        <h3>算出 $D$</h3>
+        <p>由第 1、2 步：$(x-1)D = x^e - 1 = (x-1)(x^{e-1}+\cdots+x+1)$。两边约去 $(x-1)$：</p>
+        $$D = 1 + x + \cdots + x^{e-1},\qquad \deg D = e-1.$$
+      </div></li>
+
+      <li><div class="step-body">
+        <h3>得出结论</h3>
+        <p>$D = 1$ $\iff$ $D$ 的次数是 $0$ $\iff$ $e-1 = 0$ $\iff$ $\gcd(m,n) = 1$。证毕。</p>
+      </div></li>
+    </ol>
+
+    <div class="summary-box">
+      <h3>这题记住什么</h3>
+      <ul class="tight">
+        <li>$\gcd(1+\cdots+x^{m-1},\ 1+\cdots+x^{n-1}) = 1+\cdots+x^{\gcd(m,n)-1}$。</li>
+        <li>两个式子同乘一个首一多项式，最大公因式也乘上它。</li>
+      </ul>
+    </div>
+  </section>
